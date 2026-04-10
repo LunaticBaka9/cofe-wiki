@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.maid_coffee.mapper.ShopMapper">
+    <select id="selectAllShops" resultType="com.maid_coffee.entity.Shop">
+        select * from `shop`
+        left join `shopdetails` USING (shopId)
+        <where>
+                <if test="shopId != null">shopId like concat('%', #{shopId}, '%')</if>
+                <if test="shopName != null">and shopName like concat('%', #{shopName}, '%')</if>
+                <if test="location != null">and location like concat('%', #{location}, '%')</if>
+                and shopusing != 0
+        </where>
+    </select>
+
+    <select id="selectByShopId">
+        select * from `shop`
+        left join `shopdetails` USING (shopId)
+        <where>
+            shopId = #{shopId}
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into `shop` (shopName, slogn, location, address, tel, price, openTime, updateTime)
+        values(#{shopName}, #{slogn}, #{location}, #{address}, #{tel}, #{price}, #{openTime}, NOW())
+    </insert>
+
+    <select id="selectByShopName">
+        select * from `shop` where shopName = #{shopName}
+    </select>
+    
+    <update id="updateByShopId">
+        update `shop` left join `shopdetails` using (shopId)
+        set shopName=#{shopName}, slogn=#{slogn}, location=#{location}, address=#{address}, tel=#{tel}, price=#{price}, 
+        openTime=#{openTime}, shopType=#{shopType}, 
+        <!-- 开店星期 -->
+        mon=#{mon}, tues=#{tues}, wed=#{wed}, thur=#{thur}, fri=#{fri}, sat=#{sat}, sun=#{sun},
+        <!-- 详情信息 -->
+        intro=#{intro}, obs1=#{obs1}, obs2=#{obs2}, obs3=#{obs3}, 
+        menu=#{menu}, pmenu=#{pmenu}, tags=#{tags}, shopImg=#{shopImg},
+        offical=#{offical}, twitter=#{twitter}, facebook=#{facebook}, updateTime = NOW()
+        where shopId = #{shopId}
+    </update>
+
+    <update id="updateCoverPathByShopId">
+        update `shop` set coverPath = #{coverPath}, updateTime = NOW() where shopId = #{shopId}
+    </update>
+
+    <update id="deleteByShopId">
+        update `shop` set shopusing = 0
+        where shopId = #{shopId}
+    </update>
+</mapper>

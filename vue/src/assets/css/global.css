@@ -1,0 +1,72 @@
+* {
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+}
+
+.custom-link {
+    text-decoration: none;
+}
+
+.el-container {
+    height: calc(100vh - 1rem);
+    font-family: Arial, sans-serif;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.el-main {
+    background-color: #f9f9f9;
+}
+
+.el-aside {
+    width: 16%;
+}
+
+.main-container {
+    display: flex;
+}
+
+.footer-content {
+    text-align: center;
+    padding: 10px;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+.card-title-primary {
+    background-color: #ff69b4;
+    margin: 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0;
+    background-image: linear-gradient(
+        135deg,
+        #ffb6c1 25%,
+        #ff69b4 25%,
+        #ff69b4 50%,
+        #ffb6c1 50%,
+        #ffb6c1 75%,
+        #ff69b4 75%,
+        #ff69b4
+    );
+    background-size: 14px 14px;
+}
+
+.card-title-primary .text {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.wiki-content {
+    margin: 0 20px 0 20px;
+    background-color: #fff;
+}

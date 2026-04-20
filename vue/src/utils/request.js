@@ -18,9 +18,9 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     (response) => {
-        const res = response.data;
+        let res = response.data;
         if (typeof res === "string") {
-            res = res ? JSON.parse(res) : res; // eslint-disable-line no-unused-vars
+            res = res ? JSON.parse(res) : res;
         }
         return res;
     },

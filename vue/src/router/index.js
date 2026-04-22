@@ -9,19 +9,4 @@ const router = createRouter({
     routes: [...routeIndex, ...routeAdmin, ...routeManager, ...routerWiki],
 });
 
-const whiteList = ["/login", "/register"];
-
-router.beforeEach((to, from, next) => {
-    const userStr = localStorage.getItem("code_user");
-    if (userStr) {
-        next();
-    } else {
-        if (whiteList.indexOf(to.path) !== -1) {
-            next();
-        } else {
-            next("/login");
-        }
-    }
-});
-
 export default router;

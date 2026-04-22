@@ -1,7 +1,7 @@
 <template>
     <el-main>
         <div class="hero-wrap">
-            <img class="hero-img" :src="bander2" alt="咖啡馆横幅" />
+            <img class="hero-img" src="@/assets/img/bander/bander2.png" alt="咖啡馆横幅" />
             <div class="hero-caption">
                 <h1>日本咖啡文化</h1>
                 <div class="hero-sub">在日本的每条街巷，总有一间等你停下脚步的咖啡馆。</div>
@@ -49,7 +49,7 @@
                 <el-col :span="6">
                     <div class="side-area">
                         <el-card class="side-banner-card" shadow="never">
-                            <img :src="bander1" alt="店铺推荐" class="side-banner" />
+                            <img src="@/assets/img/bander/bander1.jpg" alt="店铺推荐" class="side-banner" />
                         </el-card>
 
                         <el-card class="reminder-card" shadow="never">
@@ -79,10 +79,6 @@
 
 <script setup name="index">
 import { ref } from "vue";
-
-const bander1 = ref("/api/img/bander/bander1.jpg");
-const bander2 = ref("/api/img/bander/bander2.png");
-const bander3 = ref("/api/img/bander/bander3.webp");
 </script>
 
 <style scoped>

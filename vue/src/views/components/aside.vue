@@ -1,6 +1,6 @@
 <template>
     <el-col>
-        <el-menu>
+        <el-menu :default-active="activeIndex">
             <router-link to="/" class="custom-link">
                 <el-menu-item class="card-title-primary">
                     <span class="text">首页</span>
@@ -52,9 +52,57 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const data = reactive({
     user: JSON.parse(localStorage.getItem("code_user") || "{}"),
+});
+
+// 根据当前路由计算激活的菜单项
+const activeIndex = computed(() => {
+    const path = route.path;
+
+    // 首页
+    if (path === "/" || path === "/index") {
+        return "1";
+    }
+
+    // 咖啡厅相关页面
+    if (path.startsWith("/wiki/cafeShop")) {
+        return "1-1";
+    }
+    if (path.startsWith("/shop")) {
+        return "1-2";
+    }
+    if (path.startsWith("/search")) {
+        return "1-3";
+    }
+
+    // 咖啡相关页面
+    if (path.startsWith("/wiki/coffee")) {
+        return "2-1";
+    }
+    if (path.startsWith("/wiki/coffeeKind")) {
+        return "2-1";
+    }
+    if (path.startsWith("/wiki/coffeeCulture")) {
+        return "2-2";
+    }
+
+    // 管理相关页面
+    if (path.startsWith("/shopManager")) {
+        return "3-1";
+    }
+    if (path.startsWith("/adminManager")) {
+        return "3-2";
+    }
+    if (path.startsWith("/userManager")) {
+        return "3-3";
+    }
+
+    // 默认返回首页
+    return "1";
 });
 </script>
 <style scoped>

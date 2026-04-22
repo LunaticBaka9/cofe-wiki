@@ -6,7 +6,6 @@
         text-color="#ff007f"
         :collapse-transition="false"
         :ellipsis="false"
-        @select="handleSelect"
     >
         <el-menu-item index="0">
             <router-link to="/">
@@ -21,10 +20,10 @@
             <router-link to="/wiki/cafeShop" class="custom-link">
                 <el-menu-item index="2-1">咖啡厅介绍</el-menu-item>
             </router-link>
-            <router-link to="/shop">
+            <router-link to="/shop" class="custom-link">
                 <el-menu-item index="2-2">店面列表</el-menu-item>
             </router-link>
-            <router-link to="/search">
+            <router-link to="/search" class="custom-link">
                 <el-menu-item index="2-3">店面搜索</el-menu-item>
             </router-link>
         </el-sub-menu>
@@ -33,8 +32,9 @@
             <router-link to="/wiki/coffee" class="custom-link">
                 <el-menu-item index="3-1">咖啡简介</el-menu-item>
             </router-link>
-
-            <el-menu-item index="3-2">咖啡种类</el-menu-item>
+            <router-link to="/wiki/coffeeKind" class="custom-link">
+                <el-menu-item index="3-2">咖啡种类</el-menu-item>
+            </router-link>
         </el-sub-menu>
         <el-sub-menu index="4">
             <template #title>
@@ -56,10 +56,49 @@
 </template>
 
 <script setup name="header">
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const data = reactive({
     user: JSON.parse(localStorage.getItem("code_user") || "{}"),
+});
+
+// 根据当前路由计算激活的菜单项
+const activeIndex = computed(() => {
+    const path = route.path;
+
+    // 首页
+    if (path === "/" || path === "/index") {
+        return "1";
+    }
+
+    // 咖啡厅相关页面
+    if (path.startsWith("/wiki/cafeShop")) {
+        return "2-1";
+    }
+    if (path.startsWith("/shop")) {
+        return "2-2";
+    }
+    if (path.startsWith("/search")) {
+        return "2-3";
+    }
+
+    // 咖啡相关页面
+    if (path.startsWith("/wiki/coffee")) {
+        return "3-1";
+    }
+    if (path.startsWith("/wiki/coffeeKind")) {
+        return "3-2";
+    }
+
+    // 登录/退出相关
+    if (path.startsWith("/login")) {
+        return "4-1";
+    }
+
+    // 默认返回首页
+    return "1";
 });
 
 const logout = () => {

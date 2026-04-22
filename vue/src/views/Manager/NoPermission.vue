@@ -1,13 +1,11 @@
 <template>
     <el-main>
         <h1>Bro以为自己是Big Boss，能掌管这里的所有权限</h1>
-        <img :src="img" />
+        <img src="@/assets/img/EvilLoud.png" />
     </el-main>
 </template>
 
-<script setup>
-const img = "/api/EvilLoud.png";
-</script>
+<script setup></script>
 
 <style scoped>
 img {

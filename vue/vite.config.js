@@ -19,5 +19,11 @@ export default defineConfig({
                 rewrite: (path) => path.replace(/^\/api/, ""),
             },
         },
+        port: 5170,
+    },
+    build: {
+        // 生产环境构建配置
+        outDir: "dist",
+        assetsDir: "assets",
     },
 });

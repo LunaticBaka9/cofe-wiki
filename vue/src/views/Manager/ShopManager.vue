@@ -322,7 +322,7 @@ const deleteBatch = () => {
         .catch((err) => {});
 };
 
-const uploadUrl = "/api/upload/shop-cover";
+const uploadUrl = "/api/file/uploadShopCover";
 const fileList = ref([]);
 
 const uploadData = () => {

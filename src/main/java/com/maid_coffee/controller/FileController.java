@@ -172,4 +172,23 @@ public class FileController {
 		File file = new File(path + photo.getOriginalFilename());
 		photo.transferTo(file);
 	}
+
+	@PostMapping("/uploadShopCover")
+    public Result uploadShopCover(@RequestParam(required = false) Integer shopId, @RequestParam("photo") MultipartFile photo,
+            HttpServletRequest request) throws IOException {
+        if (photo == null || photo.isEmpty()) {
+            return Result.error("上传文件为空");
+        }
+        File uploadDirFile = getUploadDir("upload/img/shopCovers");
+
+        String original = photo.getOriginalFilename();
+        String fileName = "shop_image_" + shopId + "_240x240" + (original != null ? original : "shop.jpg");
+        Path target = uploadDirFile.toPath().resolve(fileName);
+        Files.copy(photo.getInputStream(), target);
+
+        String publicPath = "/static/upload/avatars/" + fileName;
+        String fullUrl = (baseUrl != null && !baseUrl.isEmpty()) ? baseUrl + publicPath : publicPath;
+        shopService.updateCoverPath(shopId, fullUrl);
+        return Result.success(fullUrl);
+    }
 }

@@ -8,9 +8,25 @@
             </div>
         </el-header>
         <el-row :gutter="30" class="shop-cards">
-            <el-col :span="4" v-for="(item, index) in data.tableData" :key="index">
-                <el-card shadow="hover" @click="navTo('/shopinfo?shopId=' + item.shopId)">
-                    <img :src="item.coverPath" alt="店铺图片" class="shop-image" />
+            <el-col
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                :xl="4"
+                v-for="(item, index) in data.tableData"
+                :key="index"
+            >
+                <el-card
+                    shadow="hover"
+                    class="shop-card"
+                    @click="navTo('/shopinfo?shopId=' + item.shopId)"
+                >
+                    <img
+                        :src="item.coverPath"
+                        alt="店铺图片"
+                        class="shop-image"
+                    />
                     <div class="shop-info">
                         <div>{{ item.location }}</div>
                         <div class="text-info">{{ item.shopName }}</div>
@@ -102,7 +118,20 @@ load();
 /* 商店卡片 */
 .el-card {
     --el-card-padding: 5px;
+    width: 100%;
     max-width: 300px;
+}
+
+.shop-card {
+    cursor: pointer;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.shop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .shop-image {
@@ -138,5 +167,48 @@ load();
 
 .el-col {
     margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .shop-cards {
+        padding: 10px;
+    }
+
+    .shop-cards :deep(.el-col) {
+        margin-bottom: 15px;
+    }
+
+    .shop-image {
+        height: 150px;
+    }
+
+    .shop-info div {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+        margin-bottom: 10px;
+    }
+
+    .text-info {
+        font-size: 0.75rem;
+        height: 2.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-cards {
+        padding: 5px;
+    }
+
+    .shop-image {
+        height: 120px;
+    }
+
+    .shop-info div {
+        font-size: 0.7rem;
+    }
+
+    .text-info {
+        font-size: 0.7rem;
+    }
 }
 </style>

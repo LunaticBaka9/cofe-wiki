@@ -103,11 +103,11 @@
                 <el-form-item label="封面">
                     <el-upload
                         :action="uploadUrl"
-                        name="file"
-                        :data="uploadData"
+                        name="photo"
                         :file-list="fileList"
                         :before-upload="beforeUpload"
                         :on-success="handleUploadSuccess"
+                        :on-error="handleUploadError"
                         :show-file-list="false"
                         accept="image/*"
                     >
@@ -325,18 +325,10 @@ const deleteBatch = () => {
 const uploadUrl = "/api/file/uploadShopCover";
 const fileList = ref([]);
 
-const uploadData = () => {
-    return { shopId: data.form.shopId };
-};
-
 const beforeUpload = (file) => {
     return new Promise((resolve, reject) => {
         if (!file.type.startsWith("image/")) {
             ElMessage.error("请选择图片文件");
-            return reject(false);
-        }
-        if (!data.form.shopId) {
-            ElMessage.warning("请先保存或填写 shopId 后再上传封面");
             return reject(false);
         }
         const url = URL.createObjectURL(file);
@@ -359,16 +351,17 @@ const beforeUpload = (file) => {
     });
 };
 
-const handleUploadSuccess = (res, file) => {
-    // 后端返回完整 URL 字符串
-    const url = typeof res === "string" ? res : res.url || res.data || "";
-    if (url) {
-        data.form.coverPath = url;
+const handleUploadSuccess = (response, file) => {
+    if (response && response.code === 200 && response.data) {
+        data.form.coverPath = response.data;
         ElMessage.success("上传成功");
-        load();
     } else {
-        ElMessage.error("上传失败，服务器未返回 URL");
+        ElMessage.error(response?.msg || "上传失败");
     }
+};
+
+const handleUploadError = (err) => {
+    ElMessage.error("上传失败: " + (err.message || "服务器错误"));
 };
 
 const save = () => {

@@ -1,0 +1,30 @@
+server:
+    port: 8081
+
+spring:
+    servlet:
+        multipart:
+            max-file-size: 10MB
+            max-request-size: 10MB
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: maid-coffee
+        password: wW2sN4dphT2CzK7B
+        url: jdbc:mysql://localhost:3306/maid-coffee?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+    web:
+        resources:
+            static-locations:
+                - classpath:/static/
+                - file:/www/wwwroot/cofewiki/static/
+
+my:
+    upload-path: file:/www/wwwroot/cofewiki/static/upload
+
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+        map-underscore-to-camel-case: true
+    type-aliases-package: com.maid_coffe.entity

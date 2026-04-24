@@ -7,10 +7,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-public class CorsConfig{
-    
+public class CorsConfig {
+
     @Bean
-    public CorsFilter CorsFilter(){
+    public CorsFilter CorsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");

@@ -29,12 +29,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-        <!--mybatis plus场景-->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
-            <version>3.5.15</version>
-        </dependency>
+	        <groupId>org.mybatis.spring.boot</groupId>
+	        <artifactId>mybatis-spring-boot-starter</artifactId>
+	        <version>4.0.1</version>
+	    </dependency>
 
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -47,25 +46,6 @@
          	<artifactId>pagehelper-spring-boot-starter</artifactId>
          	<version>2.1.0</version>
      	</dependency>
-
-		<!-- JWT -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>0.11.5</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.11.5</version>
-            <scope>runtime</scope>
-        </dependency>
 
 		<!-- Java工具类 -->
 		<dependency>
@@ -104,6 +84,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+		<!-- JWT -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- 密码加密 -->

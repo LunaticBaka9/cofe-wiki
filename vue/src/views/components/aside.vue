@@ -45,6 +45,9 @@
                 <router-link to="/userManager" class="custom-link">
                     <el-menu-item index="3-3">用户管理</el-menu-item>
                 </router-link>
+                <router-link to="/roleManager" class="custom-link">
+                    <el-menu-item index="3-4">用户角色管理</el-menu-item>
+                </router-link>
             </el-menu-item-group>
         </el-menu>
         <br /><br /><br /><br />

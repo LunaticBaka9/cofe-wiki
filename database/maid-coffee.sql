@@ -1,36 +1,44 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : localhost_3306
+ Source Server         : testdb
  Source Server Type    : MySQL
- Source Server Version : 80012 (8.0.12)
+ Source Server Version : 50726 (5.7.26)
  Source Host           : localhost:3306
  Source Schema         : maid-coffee
 
  Target Server Type    : MySQL
- Target Server Version : 80012 (8.0.12)
+ Target Server Version : 50726 (5.7.26)
  File Encoding         : 65001
 
- Date: 07/01/2026 20:08:32
+ Date: 08/05/2026 17:50:20
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for comment
+-- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE `comment`  (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NULL DEFAULT NULL,
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role`  (
+  `roleId` int(11) NOT NULL AUTO_INCREMENT,
+  `roleName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `roleCode` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `createTime` datetime NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`roleId`) USING BTREE,
+  UNIQUE INDEX `roleCode_index`(`roleCode`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of comment
+-- Records of role
 -- ----------------------------
+INSERT INTO `role` VALUES (1, '超级管理员', 'admin', '系统最高权限管理员', '2026-05-08 17:07:41', '2026-05-08 17:07:41');
+INSERT INTO `role` VALUES (2, '编辑员', 'editor', '可以编辑内容的用户', '2026-05-08 17:07:41', '2026-05-08 17:07:41');
+INSERT INTO `role` VALUES (3, '普通用户', 'user', '普通浏览用户', '2026-05-08 17:07:41', '2026-05-08 17:07:41');
+INSERT INTO `role` VALUES (4, '测试员', 'test', '拿来测试的', '2026-05-08 17:40:17', '2026-05-08 17:40:17');
 
 -- ----------------------------
 -- Table structure for shop
@@ -51,7 +59,7 @@ CREATE TABLE `shop`  (
   `updateTime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`shopId`) USING BTREE,
   UNIQUE INDEX `shopName_index`(`shopName`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 32009 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 32009 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shop
@@ -97,7 +105,7 @@ CREATE TABLE `shopdetails`  (
   `pmenu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `shopImg` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`shopId`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shopdetails
@@ -134,7 +142,7 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`userId`) USING BTREE,
   UNIQUE INDEX `username_index`(`username`) USING BTREE,
   UNIQUE INDEX `name_index`(`name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -168,7 +176,7 @@ CREATE TABLE `wiki`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wiki

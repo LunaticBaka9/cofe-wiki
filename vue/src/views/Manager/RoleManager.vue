@@ -3,8 +3,8 @@
         <div class="card" style="margin-bottom: 5px">
             <el-input
                 style="width: 260px; margin-right: 5px"
-                v-model="data.username"
-                placeholder="请输入账号查询"
+                v-model="data.roleName"
+                placeholder="请输入角色名称查询"
                 :prefix-icon="Search"
                 clearable
                 @keyup.enter.native="load"
@@ -12,8 +12,8 @@
             ></el-input>
             <el-input
                 style="width: 260px; margin-right: 5px"
-                v-model="data.name"
-                placeholder="请输入名称查询"
+                v-model="data.roleCode"
+                placeholder="请输入角色代码查询"
                 :prefix-icon="Search"
                 clearable
                 @keyup.enter.native="load"
@@ -25,9 +25,6 @@
 
         <div class="card" style="margin-bottom: 5px">
             <el-button type="primary" @click="handleAdd">新 增</el-button>
-            <el-button type="danger" @click="deleteBatch">批量删除</el-button>
-            <el-button type="success">批量导入</el-button>
-            <el-button type="info">批量导出</el-button>
         </div>
 
         <div class="card" style="margin-bottom: 5px">
@@ -36,25 +33,23 @@
                 border
                 :data="data.tableData"
                 style="width: 100%"
-                @selection-change="handleSelectionChange"
                 :header-cell-style="{ color: '#333', backgroundColor: '#ffb6c1' }"
             >
-                <el-table-column type="selection" width="55" />
-                <el-table-column prop="username" label="账号" />
-                <el-table-column prop="password" label="密码" />
-                <el-table-column prop="name" label="名称" />
-                <el-table-column prop="email" label="邮箱" />
-                <el-table-column prop="phone" label="电话" />
+                <el-table-column prop="roleId" label="ID" width="80" />
+                <el-table-column prop="roleName" label="角色名称" />
+                <el-table-column prop="roleCode" label="角色代码" />
+                <el-table-column prop="description" label="描述" />
                 <el-table-column prop="createTime" label="创建时间" />
-                <el-table-column prop="userType" label="用户类型" />
-                <el-table-column label="操作"  min-width="150" fixed="right">
-                    <template #default="scope" min-width="150">
-                        <el-button size="small" @click="handleEidor(scope.row)"> 修改 </el-button>
+                <el-table-column prop="updateTime" label="更新时间" />
+                <el-table-column label="操作" min-width="150" fixed="right">
+                    <template #default="scope">
+                        <el-button size="small" @click="handleEdit(scope.row)"> 修改 </el-button>
                         <el-button size="small" type="danger" @click="del(scope.row)"> 删除 </el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
+
         <div class="card">
             <el-pagination
                 v-model:current-page="data.pageNum"
@@ -67,22 +62,22 @@
             />
         </div>
 
-        <el-dialog v-model="data.formVisible" title="用户信息" width="500" destroy-on-close>
-            <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding: 20px 30px">
-                <el-form-item prop="username" label="账号">
-                    <el-input v-model="data.form.username" autocomplete="off" />
+        <el-dialog v-model="data.formVisible" title="角色信息" width="500" destroy-on-close>
+            <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="100px" style="padding: 20px 30px">
+                <el-form-item prop="roleName" label="角色名称">
+                    <el-input v-model="data.form.roleName" autocomplete="off" placeholder="例如：超级管理员" />
                 </el-form-item>
-                <el-form-item prop="password" label="密码">
-                    <el-input v-model="data.form.password" autocomplete="off" />
+                <el-form-item prop="roleCode" label="角色代码">
+                    <el-input v-model="data.form.roleCode" autocomplete="off" placeholder="例如：admin" />
                 </el-form-item>
-                <el-form-item prop="name" label="名称">
-                    <el-input v-model="data.form.name" autocomplete="off" />
-                </el-form-item>
-                <el-form-item prop="email" label="邮箱">
-                    <el-input v-model="data.form.email" autocomplete="off" />
-                </el-form-item>
-                <el-form-item prop="phone" label="电话">
-                    <el-input v-model="data.form.phone" autocomplete="off" />
+                <el-form-item prop="description" label="描述">
+                    <el-input
+                        v-model="data.form.description"
+                        type="textarea"
+                        :rows="3"
+                        autocomplete="off"
+                        placeholder="请输入角色描述"
+                    />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -92,14 +87,14 @@
                 </div>
             </template>
         </el-dialog>
-        <br /><br /><br /><br />
     </el-main>
 </template>
 
-<script setup name="userManager">
+<script setup name="roleManager">
 import request from "@/utils/request.js";
 import { onBeforeMount, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { Search } from '@element-plus/icons-vue';
 
 onBeforeMount(() => {
     const userStr = localStorage.getItem("code_user");
@@ -108,7 +103,7 @@ onBeforeMount(() => {
         if (!user.userId) {
             location.href = "/login";
         } else if (user.userType !== "admin") {
-            location.href = "/NoPermission";
+            location.href = "/noPermission";
         }
     } else {
         location.href = "/login";
@@ -116,36 +111,35 @@ onBeforeMount(() => {
 });
 
 const data = reactive({
-    username: null,
-    name: null,
+    roleName: null,
+    roleCode: null,
     pageNum: 1,
     pageSize: 10,
-    total: 6,
+    total: 0,
     tableData: [],
     formVisible: false,
     form: {},
     rules: {
-        username: [
-            { required: true, message: "请填写账号", trigger: "blur" },
-            { min: 3, message: "至少输入3位", trigger: "blur" },
+        roleName: [
+            { required: true, message: "请填写角色名称", trigger: "blur" },
         ],
-        password: [{ required: true, message: "请填写密码", trigger: "blur" }],
-        name: [{ required: true, message: "请填写名称", trigger: "blur" }],
-        email: [{ required: true, message: "请填写邮箱", trigger: "blur" }],
+        roleCode: [
+            { required: true, message: "请填写角色代码", trigger: "blur" },
+            { pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/, message: "角色代码只能包含字母、数字和下划线", trigger: "blur" }
+        ],
     },
-    rows: [],
 });
 
 const formRef = ref();
 
 const load = () => {
     request
-        .get("admin/selectPage", {
+        .get("role/selectPage", {
             params: {
                 pageNum: data.pageNum,
                 pageSize: data.pageSize,
-                username: data.username,
-                name: data.name,
+                roleName: data.roleName,
+                roleCode: data.roleCode,
             },
         })
         .then((res) => {
@@ -160,8 +154,8 @@ const load = () => {
 load();
 
 const reset = () => {
-    data.username = null;
-    data.name = null;
+    data.roleName = null;
+    data.roleCode = null;
     load();
 };
 
@@ -170,21 +164,15 @@ const handleAdd = () => {
     data.form = {};
 };
 
-const handleEidor = (row) => {
+const handleEdit = (row) => {
     data.form = JSON.parse(JSON.stringify(row));
     data.formVisible = true;
 };
 
-const handleSelectionChange = (rows) => {
-    data.rows = rows;
-};
-
 const add = () => {
-    //应用表单进行验证
     formRef.value.validate((valid) => {
         if (valid) {
-            //验证通过的情况下调用接口
-            request.post("/admin/add", data.form).then((res) => {
+            request.post("/role/add", data.form).then((res) => {
                 if (res.code === "200") {
                     data.formVisible = false;
                     ElMessage.success("新增成功");
@@ -194,17 +182,15 @@ const add = () => {
                 }
             });
         } else {
-            ElMessage.error(res.msg);
+            ElMessage.error("请检查表单填写");
         }
     });
 };
 
-const update = (row) => {
-    //应用表单进行验证
+const update = () => {
     formRef.value.validate((valid) => {
         if (valid) {
-            //验证通过的情况下调用接口
-            request.put("/admin/update", data.form).then((res) => {
+            request.put("/role/update", data.form).then((res) => {
                 if (res.code === "200") {
                     data.formVisible = false;
                     ElMessage.success("修改成功");
@@ -214,16 +200,15 @@ const update = (row) => {
                 }
             });
         } else {
-            ElMessage.error(res.msg);
+            ElMessage.error("请检查表单填写");
         }
     });
 };
 
 const del = (row) => {
-    //应用表单进行验证
-    ElMessageBox.confirm("确认删除此列数据", "删除确认", { type: "warning" })
-        .then((res) => {
-            request.put("/admin/delete", row).then((res) => {
+    ElMessageBox.confirm("确认删除此角色？", "删除确认", { type: "warning" })
+        .then(() => {
+            request.delete("/role/delete", { params: { roleId: row.roleId } }).then((res) => {
                 if (res.code === "200") {
                     ElMessage.success("删除成功");
                     load();
@@ -232,30 +217,11 @@ const del = (row) => {
                 }
             });
         })
-        .catch((err) => {});
-};
-
-const deleteBatch = () => {
-    if (data.rows.length == 0) {
-        ElMessage.warning("请选择数据");
-        return;
-    }
-    ElMessageBox.confirm("确认删除此列数据", "删除确认", { type: "warning" })
-        .then((res) => {
-            request.put("/admin/deleteBatch", data.rows).then((res) => {
-                if (res.code === "200") {
-                    ElMessage.success("批量删除成功");
-                    load();
-                } else {
-                    ElMessage.error(res.msg);
-                }
-            });
-        })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 const save = () => {
-    data.form.userId ? update() : add();
+    data.form.roleId ? update() : add();
 };
 </script>
 
@@ -263,5 +229,7 @@ const save = () => {
 .card {
     padding: 10px;
     border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 10px;
 }
 </style>

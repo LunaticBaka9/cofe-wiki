@@ -26,9 +26,24 @@
             @clear="load"
         ></el-input>
         <el-row :gutter="30" class="shop-cards">
-            <el-col :span="4" v-for="(item, index) in data.tableData" :key="index">
-                <el-card shadow="hover" @click="navTo('/shopinfo?shopId=' + item.shopId)">
-                    <img :src="item.coverPath" alt="店铺图片" class="shop-image" />
+            <el-col
+                :xs="24"
+                :sm="12"
+                :md="8"
+                :lg="4"
+                :xl="4"
+                v-for="(item, index) in data.tableData"
+                :key="index"
+            >
+                <el-card
+                    shadow="hover"
+                    @click="navTo('/shopinfo?shopId=' + item.shopId)"
+                >
+                    <img
+                        :src="item.coverPath"
+                        alt="店铺图片"
+                        class="shop-image"
+                    />
                     <div class="shop-info">
                         <div>{{ item.location }}</div>
                         <div class="text-info">{{ item.shopName }}</div>

@@ -12,7 +12,7 @@
                 :xs="24"
                 :sm="12"
                 :md="8"
-                :lg="6"
+                :lg="4"
                 :xl="4"
                 v-for="(item, index) in data.tableData"
                 :key="index"

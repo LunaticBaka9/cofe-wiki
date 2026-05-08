@@ -15,6 +15,11 @@ const routeManager = [
         component: () => import("@/views/Manager/ShopManager.vue"),
     },
     {
+        path: "/roleManager",
+        name: "roleManager",
+        component: () => import("@/views/Manager/RoleManager.vue"),
+    },
+    {
         path: "/noPermission",
         name: "noPermission",
         component: () => import("@/views/Manager/NoPermission.vue"),

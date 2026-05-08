@@ -37,7 +37,10 @@
                 :data="data.tableData"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
-                :header-cell-style="{ color: '#333', backgroundColor: '#ffb6c1' }"
+                :header-cell-style="{
+                    color: '#333',
+                    backgroundColor: '#ffb6c1',
+                }"
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column prop="username" label="账号" />
@@ -46,11 +49,23 @@
                 <el-table-column prop="email" label="邮箱" />
                 <el-table-column prop="phone" label="电话" />
                 <el-table-column prop="createTime" label="创建时间" />
-                <el-table-column prop="userType" label="用户类型" />
-                <el-table-column label="操作">
+                <el-table-column prop="userType" label="用户类型">
                     <template #default="scope">
-                        <el-button size="small" @click="handleEidor(scope.row)"> 修改 </el-button>
-                        <el-button size="small" type="danger" @click="del(scope.row)"> 删除 </el-button>
+                        <span>{{ getRoleName(scope.row.userType) }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" min-width="150" fixed="right">
+                    <template #default="scope">
+                        <el-button size="small" @click="handleEidor(scope.row)">
+                            修改
+                        </el-button>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="del(scope.row)"
+                        >
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,8 +82,19 @@
             />
         </div>
 
-        <el-dialog v-model="data.formVisible" title="用户信息" width="500" destroy-on-close>
-            <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding: 20px 30px">
+        <el-dialog
+            v-model="data.formVisible"
+            title="用户信息"
+            width="500"
+            destroy-on-close
+        >
+            <el-form
+                ref="formRef"
+                :model="data.form"
+                :rules="data.rules"
+                label-width="80px"
+                style="padding: 20px 30px"
+            >
                 <el-form-item prop="username" label="账号">
                     <el-input v-model="data.form.username" autocomplete="off" />
                 </el-form-item>
@@ -85,15 +111,25 @@
                     <el-input v-model="data.form.phone" autocomplete="off" />
                 </el-form-item>
                 <el-form-item prop="userType" label="用户类型">
-                    <el-radio-group v-model="data.form.userType">
-                        <el-radio border value="user">user</el-radio>
-                        <el-radio border value="editor">editor</el-radio>
-                    </el-radio-group>
+                    <el-select
+                        v-model="data.form.userType"
+                        placeholder="请选择用户类型"
+                        style="width: 240px"
+                    >
+                        <el-option
+                            v-for="item in roleList"
+                            :key="item.roleCode"
+                            :label="item.roleName"
+                            :value="item.roleCode"
+                        />
+                    </el-select>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="data.formVisible = false">取消</el-button>
+                    <el-button @click="data.formVisible = false"
+                        >取消</el-button
+                    >
                     <el-button type="primary" @click="save"> 保存 </el-button>
                 </div>
             </template>
@@ -119,6 +155,8 @@ onBeforeMount(() => {
     } else {
         location.href = "/login";
     }
+
+    loadRoles();
 });
 
 const data = reactive({
@@ -138,7 +176,9 @@ const data = reactive({
         password: [{ required: true, message: "请填写密码", trigger: "blur" }],
         name: [{ required: true, message: "请填写名称", trigger: "blur" }],
         email: [{ required: true, message: "请填写邮箱", trigger: "blur" }],
-        userType: [{ reqired: true, message: "请选择用户类型", trigger: "change" }],
+        userType: [
+            { reqired: true, message: "请选择用户类型", trigger: "change" },
+        ],
     },
     rows: [],
 });
@@ -170,6 +210,21 @@ const reset = () => {
     data.username = null;
     data.name = null;
     load();
+};
+
+const roleList = ref([]);
+
+const loadRoles = () => {
+    request.get("role/selectAllRoles").then((res) => {
+        if (res.code === "200") {
+            roleList.value = res.data;
+        }
+    });
+};
+
+const getRoleName = (roleCode) => {
+    const role = roleList.value.find((r) => r.roleCode === roleCode);
+    return role ? role.roleName : roleCode;
 };
 
 const handleAdd = () => {

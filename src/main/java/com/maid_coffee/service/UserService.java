@@ -2,6 +2,8 @@ package com.maid_coffee.service;
 
 import java.util.List;
 
+import com.maid_coffee.entity.Role;
+import com.maid_coffee.mapper.RoleMapper;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -18,6 +20,8 @@ public class UserService {
     
     @Resource
     UserMapper userMapper;
+    @Resource
+    RoleMapper roleMapper;
 
     public List<User> selectAllUsers(){
         return userMapper.selectAllUsers(null);
@@ -72,7 +76,6 @@ public class UserService {
     }
 
     public User login(User user){
-        //验证账号是否存在
         User dbuser = userMapper.selectByUsername(user.getUsername());
         if(dbuser == null){
             throw new CustomerException("账号或密码错误");
@@ -80,6 +83,12 @@ public class UserService {
         if(!dbuser.getPassword().equals(user.getPassword())){
             throw new CustomerException("账号或密码错误");
         }
+
+        if(dbuser.getUserType() != null){
+            Role role = roleMapper.selectByRoleCode(dbuser.getUserType());
+            dbuser.setRole(role);
+        }
+
         return dbuser;
     }
 

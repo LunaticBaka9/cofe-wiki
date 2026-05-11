@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.maid_coffee.mapper.CommentsMapper">
+    <!-- 通用结果映射 -->
+    <resultMap id="BaseResultMap" type="com.maid_coffee.entity.Comments">
+        <id column="id" property="id"/>
+        <result column="target_id" property="targetId"/>
+        <result column="target_type" property="targetType"/>
+        <result column="user_id" property="userId"/>
+        <result column="content" property="content"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="reply_count" property="replyCount"/>
+        <result column="status" property="status"/>
+        <result column="is_top" property="isTop"/>
+        <result column="root_id" property="rootId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="parent_user_id" property="parentUserId"/>
+        <result column="avatar_url" property="avatarUrl"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="updated_date" property="updatedDate"/>
+    </resultMap>
+    
+    <!-- 查询一级评论 -->
+    <select id="selectRootComments" resultMap="BaseResultMap">
+        SELECT
+            id, target_id, target_type, user_id, content, like_count, reply_count,
+            is_top, root_id, parent_id, parent_user_id, avatar_url, status, created_date
+        FROM comments
+        WHERE target_id = #{targetId} AND target_type = #{targetType} AND status = 1 AND root_id = 0
+        ORDER BY is_top DESC, created_date DESC
+    </select>
+
+    <!-- 查询回复列表 -->
+    <select id="selectRepliesByRootId" resultMap="BaseResultMap">
+        SELECT
+            id, target_id, target_type, user_id, content, parent_user_id,
+            like_count, reply_count, avatar_url, status, created_date
+        FROM comments
+        WHERE root_id = #{rootId} AND status = 1
+        ORDER BY created_date ASC
+    </select>
+
+    <!-- 查询单条评论 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM comments WHERE id = #{id}
+    </select>
+
+    <!-- 插入评论 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comments (
+            target_id, target_type, user_id, content,
+            root_id, parent_id, parent_user_id, avatar_url, created_date, updated_date
+        ) VALUES (
+            #{targetId}, #{targetType}, #{userId}, #{content},
+            #{rootId}, #{parentId}, #{parentUserId}, #{avatarUrl}, NOW(), NOW()
+        )
+    </insert>
+
+    <!-- 更新回复数 -->
+    <update id="updateReplyCount">
+        UPDATE comments SET reply_count = #{count}, updated_date = NOW() WHERE id = #{commentId}
+    </update>
+
+    <!-- 更新点赞数 -->
+    <update id="updateLikeCount">
+        UPDATE comments SET like_count = #{count}, updated_date = NOW() WHERE id = #{commentId}
+    </update>
+
+    <!-- 更新评论状态 -->
+    <update id="updateStatus">
+        UPDATE comments SET status = #{status}, updated_date = NOW() WHERE id = #{id}
+    </update>
+    
+</mapper>

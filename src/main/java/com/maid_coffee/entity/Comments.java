@@ -1,0 +1,24 @@
+package com.maid_coffee.entity;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+public class Comments {
+    Long id;
+    Long targetId;
+    String targetType;
+    Long rootId;
+    Long parentId;
+    Long parentUserId;
+    String avatarUrl;
+    Long userId;
+    String content;
+    Integer likeCount;
+    Integer replyCount;
+    Boolean isTop;
+    Boolean status;
+    Date createdDate;
+    Date updatedDate;
+}

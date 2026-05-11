@@ -1,21 +1,52 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : testdb
+ Source Server         : mysql-8.0.12
  Source Server Type    : MySQL
- Source Server Version : 50726 (5.7.26)
+ Source Server Version : 80012 (8.0.12)
  Source Host           : localhost:3306
  Source Schema         : maid-coffee
 
  Target Server Type    : MySQL
- Target Server Version : 50726 (5.7.26)
+ Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 08/05/2026 17:50:20
+ Date: 11/05/2026 18:01:21
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for comments
+-- ----------------------------
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '评论的唯一标识符，主键',
+  `target_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '目标ID（如视频ID、文章ID）',
+  `target_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '目标类型（1-视频，2-文章，3-动态）',
+  `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '发布者ID',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '评论内容',
+  `like_count` int(11) NOT NULL DEFAULT 0 COMMENT '点赞数',
+  `reply_count` int(11) NOT NULL DEFAULT 0 COMMENT '回复数',
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '状态（1-正常，2-已删除，3-待审核）',
+  `is_top` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否置顶（0-否，1-是）',
+  `root_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '根评论ID（一级评论为0，回复则指向一级评论ID）',
+  `parent_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '父评论ID（直接回复的对象ID）',
+  `parent_user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '父评论发布者ID（用于显示回复@谁）',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_target`(`target_id` ASC, `target_type` ASC) USING BTREE,
+  INDEX `idx_root_status_created`(`root_id` ASC, `status` ASC, `created_at` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comments
+-- ----------------------------
+INSERT INTO `comments` VALUES (1, 0, '1', NULL, 0, 'test', 0, 0, 1, 0, 0, 0, 0, '2026-05-11 17:56:00', '2026-05-11 17:56:00');
 
 -- ----------------------------
 -- Table structure for role
@@ -105,7 +136,7 @@ CREATE TABLE `shopdetails`  (
   `pmenu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `shopImg` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`shopId`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shopdetails
@@ -176,7 +207,7 @@ CREATE TABLE `wiki`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wiki

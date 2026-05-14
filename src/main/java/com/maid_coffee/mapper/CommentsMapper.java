@@ -12,12 +12,12 @@ public interface CommentsMapper {
     /**
      * 根据目标ID获取一级评论列表
      */
-    List<Comments> selectRootComments(Comments comments);
+    List<Comments> selectRootComments(Long targetId, String targetType);
 
     /**
      * 根据根评论ID获取所有回复列表
      */
-    List<Comments> selectRepliesByRootId(Comments comments);
+    List<Comments> selectRepliesByRootId(@Param("rootId") Long rootId);
 
     /**
      * 根据ID获取单条评论

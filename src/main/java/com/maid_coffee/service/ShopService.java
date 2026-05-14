@@ -18,48 +18,47 @@ public class ShopService {
     @Resource
     ShopMapper shopMapper;
 
-    public List<Shop> selectAllShops(){
+    public List<Shop> selectAllShops() {
         return shopMapper.selectAllShops(null);
     }
 
-    public Shop selectByShopId(Integer shopId){
+    public Shop selectByShopId(Integer shopId) {
         return shopMapper.selectByShopId(shopId);
     }
 
-    public PageInfo<Shop> selectPage(Integer pageNum, Integer pageSize, Shop shop){
-        //开启分页查询
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<Shop> selectPage(Integer pageNum, Integer pageSize, Shop shop) {
+        // 开启分页查询
+        PageHelper.startPage(pageNum, pageSize);
         List<Shop> list = shopMapper.selectAllShops(shop);
         return PageInfo.of(list);
     }
 
-    public void add(Shop shop){
+    public void add(Shop shop) {
         Shop dbShop = shopMapper.selectByShopName(shop.getShopName());
-        if(dbShop != null){
-            System.out.println("Duplicate shop name: " + dbShop.getShopName());
+        if (dbShop != null) {
             throw new CustomerException("商店名称重复");
         }
         shopMapper.insert(shop);
     }
 
-    public void update(Shop shop){
+    public void update(Shop shop) {
         shopMapper.updateByShopId(shop);
     }
 
-    public void updateCoverPath(Integer shopId, String coverPath){
+    public void updateCoverPath(Integer shopId, String coverPath) {
         shopMapper.updateCoverPathByShopId(shopId, coverPath);
     }
 
-    public void deleteByShopId(Shop shop){
+    public void deleteByShopId(Shop shop) {
         Shop dbShop = shopMapper.selectByShopName(shop.getShopName());
-        if(dbShop == null){
+        if (dbShop == null) {
             throw new CustomerException("找不到用户，无法删除");
         }
         shopMapper.deleteByShopId(shop);
     }
 
-    public void deleteBatch(List<Shop> list){
-        for(Shop shop: list){
+    public void deleteBatch(List<Shop> list) {
+        for (Shop shop : list) {
             this.deleteByShopId(shop);
         }
     }

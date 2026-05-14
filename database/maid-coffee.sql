@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 11/05/2026 18:01:21
+ Date: 14/05/2026 17:58:56
 */
 
 SET NAMES utf8mb4;
@@ -35,32 +35,33 @@ CREATE TABLE `comments`  (
   `root_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '根评论ID（一级评论为0，回复则指向一级评论ID）',
   `parent_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '父评论ID（直接回复的对象ID）',
   `parent_user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '父评论发布者ID（用于显示回复@谁）',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_target`(`target_id` ASC, `target_type` ASC) USING BTREE,
-  INDEX `idx_root_status_created`(`root_id` ASC, `status` ASC, `created_at` ASC) USING BTREE,
+  INDEX `idx_root_status_created`(`root_id` ASC, `status` ASC, `created_date` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
-INSERT INTO `comments` VALUES (1, 0, '1', NULL, 0, 'test', 0, 0, 1, 0, 0, 0, 0, '2026-05-11 17:56:00', '2026-05-11 17:56:00');
+INSERT INTO `comments` VALUES (1, 0, 'shop', NULL, 0, 'test', 0, 0, 1, 0, 0, 0, 0, '2026-05-11 17:56:00', '2026-05-12 14:21:59');
+INSERT INTO `comments` VALUES (2, 32005, 'shop', '', 16, '123', 0, 0, 1, 0, 0, 0, 0, '2026-05-14 17:54:22', '2026-05-14 17:54:22');
 
 -- ----------------------------
 -- Table structure for role
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
-  `roleId` int(11) NOT NULL AUTO_INCREMENT,
-  `roleName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `roleCode` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `role_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `updateTime` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`roleId`) USING BTREE,
-  UNIQUE INDEX `roleCode_index`(`roleCode`) USING BTREE
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`role_id`) USING BTREE,
+  UNIQUE INDEX `roleCode_index`(`role_code`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -160,17 +161,18 @@ INSERT INTO `shopdetails` VALUES (NULL, 32007, NULL, NULL, NULL, NULL, NULL, NUL
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `deleteTime` datetime NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  `delete_time` datetime NULL DEFAULT NULL,
   `userusing` tinyint(4) NULL DEFAULT 1,
-  `userType` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`userId`) USING BTREE,
+  `user_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username_index`(`username`) USING BTREE,
   UNIQUE INDEX `name_index`(`name`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
@@ -178,24 +180,24 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'editor42', '123456', '海豹四十二', 'user@test.com', '12345678910', '2025-12-04 15:08:00', NULL, 1, 'editor');
-INSERT INTO `user` VALUES (2, 'user42', '123456', '用户42', 'user@test.com', '12345678910', '2025-12-05 12:37:39', NULL, 1, 'user');
-INSERT INTO `user` VALUES (3, 'user3', '123456', '用户3', 'user@test.com', '12345678910', '2025-12-04 16:06:09', NULL, 1, 'user');
-INSERT INTO `user` VALUES (4, 'user4', '123456', '用户4', 'user@test.com', '12345678910', '2025-12-04 16:14:05', NULL, 1, 'user');
-INSERT INTO `user` VALUES (5, 'user57', '1234562', '用户5', 'user@test.com', '12345678910', '2025-12-05 01:53:56', NULL, 1, 'user');
-INSERT INTO `user` VALUES (6, 'user6', '123456', '用户6', 'user@test.com', '12345678910', '2025-12-05 01:53:59', '2025-12-08 18:32:57', 0, 'user');
-INSERT INTO `user` VALUES (7, 'user7', '123456', '用户7', 'user@test.com', '12345678910', '2025-12-05 01:54:01', '2025-12-08 18:32:57', 0, 'user');
-INSERT INTO `user` VALUES (10, 'test123', '123', '123', '123', '131313131313', '2025-12-05 17:07:19', NULL, 1, 'user');
-INSERT INTO `user` VALUES (8, 'user8', '123123', '用户8', 'editor@test.com', '12345678910', '2025-12-05 01:26:38', NULL, 1, 'editor');
-INSERT INTO `user` VALUES (9, 'editor9', '123123', '九', '123123@test.com', '99999999999', '2025-12-05 01:54:46', NULL, 1, 'editor');
-INSERT INTO `user` VALUES (11, 'user4221', '123456', '用户4213', 'user@test.com', '12345678911', '2025-12-08 17:52:54', NULL, 0, 'user');
-INSERT INTO `user` VALUES (12, '234234234', '234324234', '测试一下字符问题', '234234234324', '23423423', '2025-12-08 17:56:05', NULL, 1, 'user');
-INSERT INTO `user` VALUES (13, 'testCealTime', 'testest', 'Test for CreateTime', 'user@test.com', NULL, '2025-12-08 17:58:55', '2025-12-08 18:03:16', 1, 'user');
-INSERT INTO `user` VALUES (14, 'register', '123123', 'register', 'test@test.com', '12312312312', '2025-12-11 17:22:11', NULL, 1, 'user');
-INSERT INTO `user` VALUES (15, 'test3', '123', 'test3', '123@er.vom', '123', '2025-12-11 17:37:21', NULL, 1, 'user');
-INSERT INTO `user` VALUES (16, 'admin', '123456', '管理员1', 'admin@test.com', '12345678910', '2025-12-11 18:48:46', '2026-01-01 15:59:40', 1, 'admin');
-INSERT INTO `user` VALUES (17, 'adminTest', '12312322', 'testinsert', '123123', '1231233', '2025-12-11 19:02:48', '2026-01-01 15:59:41', 1, 'admin');
-INSERT INTO `user` VALUES (18, 'testdup', 'p', 'testdup', '3123123123', NULL, '2025-12-30 17:11:41', '2026-01-01 15:59:41', 1, 'admin');
+INSERT INTO `user` VALUES (1, 'editor42', '123456', NULL, '海豹四十二', 'user@test.com', '12345678910', '2025-12-04 15:08:00', NULL, 1, 'editor');
+INSERT INTO `user` VALUES (2, 'user42', '123456', NULL, '用户42', 'user@test.com', '12345678910', '2025-12-05 12:37:39', NULL, 1, 'user');
+INSERT INTO `user` VALUES (3, 'user3', '123456', NULL, '用户3', 'user@test.com', '12345678910', '2025-12-04 16:06:09', NULL, 1, 'user');
+INSERT INTO `user` VALUES (4, 'user4', '123456', NULL, '用户4', 'user@test.com', '12345678910', '2025-12-04 16:14:05', NULL, 1, 'user');
+INSERT INTO `user` VALUES (5, 'user57', '1234562', NULL, '用户5', 'user@test.com', '12345678910', '2025-12-05 01:53:56', NULL, 1, 'user');
+INSERT INTO `user` VALUES (6, 'user6', '123456', NULL, '用户6', 'user@test.com', '12345678910', '2025-12-05 01:53:59', '2025-12-08 18:32:57', 0, 'user');
+INSERT INTO `user` VALUES (7, 'user7', '123456', NULL, '用户7', 'user@test.com', '12345678910', '2025-12-05 01:54:01', '2025-12-08 18:32:57', 0, 'user');
+INSERT INTO `user` VALUES (10, 'test123', '123', NULL, '123', '123', '131313131313', '2025-12-05 17:07:19', NULL, 1, 'user');
+INSERT INTO `user` VALUES (8, 'user8', '123123', NULL, '用户8', 'editor@test.com', '12345678910', '2025-12-05 01:26:38', NULL, 1, 'editor');
+INSERT INTO `user` VALUES (9, 'editor9', '123123', NULL, '九', '123123@test.com', '99999999999', '2025-12-05 01:54:46', NULL, 1, 'editor');
+INSERT INTO `user` VALUES (11, 'user4221', '123456', NULL, '用户4213', 'user@test.com', '12345678911', '2025-12-08 17:52:54', NULL, 0, 'user');
+INSERT INTO `user` VALUES (12, '234234234', '234324234', NULL, '测试一下字符问题', '234234234324', '23423423', '2025-12-08 17:56:05', NULL, 1, 'user');
+INSERT INTO `user` VALUES (13, 'testCealTime', 'testest', NULL, 'Test for CreateTime', 'user@test.com', NULL, '2025-12-08 17:58:55', '2025-12-08 18:03:16', 1, 'user');
+INSERT INTO `user` VALUES (14, 'register', '123123', NULL, 'register', 'test@test.com', '12312312312', '2025-12-11 17:22:11', NULL, 1, 'user');
+INSERT INTO `user` VALUES (15, 'test3', '123', NULL, 'test3', '123@er.vom', '123', '2025-12-11 17:37:21', NULL, 1, 'user');
+INSERT INTO `user` VALUES (16, 'admin', '123456', NULL, '管理员1', 'admin@test.com', '12345678910', '2025-12-11 18:48:46', '2026-01-01 15:59:40', 1, 'admin');
+INSERT INTO `user` VALUES (17, 'adminTest', '12312322', NULL, 'testinsert', '123123', '1231233', '2025-12-11 19:02:48', '2026-01-01 15:59:41', 1, 'admin');
+INSERT INTO `user` VALUES (18, 'testdup', 'p', NULL, 'testdup', '3123123123', NULL, '2025-12-30 17:11:41', '2026-01-01 15:59:41', 1, 'admin');
 
 -- ----------------------------
 -- Table structure for wiki

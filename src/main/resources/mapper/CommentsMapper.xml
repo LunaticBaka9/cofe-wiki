@@ -22,26 +22,36 @@
         <result column="avatar_url" property="avatarUrl"/>
         <result column="created_date" property="createdDate"/>
         <result column="updated_date" property="updatedDate"/>
+        <result column="user_name" property="userName"/>
+        <result column="parent_user_name" property="parentUserName"/>
     </resultMap>
     
     <!-- 查询一级评论 -->
     <select id="selectRootComments" resultMap="BaseResultMap">
         SELECT
-            id, target_id, target_type, user_id, content, like_count, reply_count,
-            is_top, root_id, parent_id, parent_user_id, avatar_url, status, created_date
-        FROM comments
-        WHERE target_id = #{targetId} AND target_type = #{targetType} AND status = 1 AND root_id = 0
-        ORDER BY is_top DESC, created_date DESC
+            c.id, c.target_id, c.target_type, c.user_id, c.content, c.like_count, c.reply_count,
+            c.is_top, c.root_id, c.parent_id, c.parent_user_id, c.avatar_url, c.status, c.created_date,
+            u.name AS user_name,
+            pu.name AS parent_user_name
+        FROM comments c
+        LEFT JOIN `user` u ON c.user_id = u.userId
+        LEFT JOIN `user` pu ON c.parent_user_id = pu.userId
+        WHERE c.target_id = #{targetId} AND c.target_type = #{targetType} AND c.status = 1 AND c.root_id = 0
+        ORDER BY c.is_top DESC, c.created_date DESC
     </select>
 
     <!-- 查询回复列表 -->
     <select id="selectRepliesByRootId" resultMap="BaseResultMap">
         SELECT
-            id, target_id, target_type, user_id, content, parent_user_id,
-            like_count, reply_count, avatar_url, status, created_date
-        FROM comments
-        WHERE root_id = #{rootId} AND status = 1
-        ORDER BY created_date ASC
+            c.id, c.target_id, c.target_type, c.user_id, c.content, c.parent_id, c.parent_user_id,
+            c.root_id, c.like_count, c.reply_count, c.avatar_url, c.status, c.created_date,
+            u.name AS user_name,
+            pu.name AS parent_user_name
+        FROM comments c
+        LEFT JOIN `user` u ON c.user_id = u.userId
+        LEFT JOIN `user` pu ON c.parent_user_id = pu.userId
+        WHERE c.root_id = #{rootId} AND c.status = 1
+        ORDER BY c.created_date ASC
     </select>
 
     <!-- 查询单条评论 -->
@@ -74,5 +84,5 @@
     <update id="updateStatus">
         UPDATE comments SET status = #{status}, updated_date = NOW() WHERE id = #{id}
     </update>
-    
+
 </mapper>

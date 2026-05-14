@@ -1,3 +1,5 @@
+// 请求封装
+
 import axios from "axios";
 import { ElMessage } from "element-plus";
 
@@ -13,7 +15,7 @@ request.interceptors.request.use(
     },
     (error) => {
         return Promise.reject(error);
-    }
+    },
 );
 
 request.interceptors.response.use(
@@ -33,7 +35,7 @@ request.interceptors.response.use(
             console.error(error.message);
         }
         return Promise.reject(error);
-    }
+    },
 );
 
 export default request;

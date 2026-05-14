@@ -10,34 +10,34 @@
         select * from `role`
         <where>
             <if test="roleName != null and roleName != ''">
-                roleName like concat('%', #{roleName}, '%')
+                role_name like concat('%', #{roleName}, '%')
             </if>
             <if test="roleCode != null and roleCode != ''">
-                and roleCode like concat('%', #{roleCode}, '%')
+                and role_code like concat('%', #{roleCode}, '%')
             </if>
         </where>
     </select>
 
     <select id="selectById" resultType="com.maid_coffee.entity.Role">
-        select * from `role` where roleId = #{roleId}
+        select * from `role` where role_id = #{roleId}
     </select>
 
     <select id="selectByRoleCode" resultType="com.maid_coffee.entity.Role">
-        select * from `role` where roleCode = #{roleCode}
+        select * from `role` where role_code = #{roleCode}
     </select>
 
     <insert id="insert">
-        insert into `role` (roleName, roleCode, description, createTime, updateTime)
+        insert into `role` (role_name, role_code, description, create_time, update_time)
         values(#{roleName}, #{roleCode}, #{description}, NOW(), NOW())
     </insert>
 
     <update id="update">
-        update `role` set roleName=#{roleName}, roleCode=#{roleCode},
-        description=#{description}, updateTime=NOW()
-        where roleId = #{roleId}
+        update `role` set role_name=#{roleName}, role_code=#{roleCode},
+        description=#{description}, update_time=NOW()
+        where role_id = #{roleId}
     </update>
 
     <delete id="delete">
-        delete from `role` where roleId = #{roleId}
+        delete from `role` where role_id = #{roleId}
     </delete>
 </mapper>

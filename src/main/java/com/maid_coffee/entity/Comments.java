@@ -14,6 +14,8 @@ public class Comments {
     Long parentUserId;
     String avatarUrl;
     Long userId;
+    String userName;
+    String parentUserName;
     String content;
     Integer likeCount;
     Integer replyCount;

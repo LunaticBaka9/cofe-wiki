@@ -2,16 +2,15 @@ package com.maid_coffee.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageInfo;
 import com.maid_coffee.common.Result;
 import com.maid_coffee.entity.Comments;
 import com.maid_coffee.service.CommentsService;
@@ -25,30 +24,10 @@ public class CommentsController {
     @Resource
     CommentsService commentsService;
 
-    @GetMapping("/selectRootComments")
-    public Result selectRootComments(Comments comments) {
-        List<Comments> list = commentsService.selectRootComments(comments);
+    @GetMapping("/list/{targetId}/{targetType}")
+    public Result list(@PathVariable Long targetId, @PathVariable String targetType) {
+        List<Comments> list = commentsService.selectRootComments(targetId, targetType);
         return Result.success(list);
-    }
-
-    @GetMapping("/selectRepliesByRootId/{rootId}")
-    public Result selectRepliesByRootId(@PathVariable Long rootId) {
-        List<Comments> list = commentsService.selectRepliesByRootId(rootId);
-        return Result.success(list);
-    }
-
-    @GetMapping("/selectById/{id}")
-    public Result selectById(@PathVariable Long id) {
-        Comments comment = commentsService.selectById(id);
-        return Result.success(comment);
-    }
-
-    @GetMapping("/selectPage")
-    public Result selectPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                              @RequestParam(defaultValue = "10") Integer pageSize,
-                              Comments comments) {
-        PageInfo<Comments> pageInfo = commentsService.selectPage(pageNum, pageSize, comments);
-        return Result.success(pageInfo);
     }
 
     @PostMapping("/add")
@@ -57,9 +36,23 @@ public class CommentsController {
         return Result.success();
     }
 
-    @PutMapping("/delete")
-    public Result delete(@RequestBody Comments comment) {
-        commentsService.delete(comment);
+    @GetMapping("/replies/{rootId}")
+    public Result replies(@PathVariable Long rootId) {
+        List<Comments> replies = commentsService.selectRepliesByRootId(rootId);
+        return Result.success(replies);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Long id) {
+        commentsService.delete(id);
+        return Result.success();
+    }
+
+    @PostMapping("/like/{commentId}")
+    public Result toggleLike(@PathVariable Long commentId,
+            @RequestParam Long userId,
+            @RequestParam String action) {
+        commentsService.toggleLike(commentId, userId, action);
         return Result.success();
     }
 }

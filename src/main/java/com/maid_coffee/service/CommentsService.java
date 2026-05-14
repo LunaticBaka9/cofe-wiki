@@ -18,14 +18,12 @@ public class CommentsService {
     @Resource
     CommentsMapper commentsMapper;
 
-    public List<Comments> selectRootComments(Comments comments) {
-        return commentsMapper.selectRootComments(comments);
+    public List<Comments> selectRootComments(Long targetId, String targetType) {
+        return commentsMapper.selectRootComments(targetId, targetType);
     }
 
     public List<Comments> selectRepliesByRootId(Long rootId) {
-        Comments param = new Comments();
-        param.setRootId(rootId);
-        return commentsMapper.selectRepliesByRootId(param);
+        return commentsMapper.selectRepliesByRootId(rootId);
     }
 
     public Comments selectById(Long id) {
@@ -34,7 +32,7 @@ public class CommentsService {
 
     public PageInfo<Comments> selectPage(Integer pageNum, Integer pageSize, Comments comments) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Comments> list = commentsMapper.selectRootComments(comments);
+        List<Comments> list = commentsMapper.selectRootComments(comments.getTargetId(), comments.getTargetType());
         return PageInfo.of(list);
     }
 
@@ -70,13 +68,27 @@ public class CommentsService {
         }
     }
 
-    public void delete(Comments comment) {
-        Comments existing = commentsMapper.selectById(comment.getId());
+    public void delete(Long id) {
+        Comments existing = commentsMapper.selectById(id);
         if (existing == null) {
             throw new CustomerException("评论不存在");
         }
         existing.setStatus(false);
         existing.setUpdatedDate(new java.util.Date());
         commentsMapper.updateStatus(existing);
+    }
+
+    public void toggleLike(Long commentId, Long userId, String action) {
+        Comments comment = commentsMapper.selectById(commentId);
+        if (comment == null) {
+            throw new CustomerException("评论不存在");
+        }
+        int count = comment.getLikeCount() != null ? comment.getLikeCount() : 0;
+        if ("like".equals(action)) {
+            count++;
+        } else if ("unlike".equals(action)) {
+            count = Math.max(0, count - 1);
+        }
+        commentsMapper.updateLikeCount(commentId, count);
     }
 }

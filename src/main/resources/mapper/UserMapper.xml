@@ -17,7 +17,7 @@
     </select>
 
     <insert id="insert">
-        insert into `user` (username, password, name, email, phone, userType, createTime)
+        insert into `user` (username, password, name, email, phone, user_type, create_time)
         values(#{username}, #{password}, #{name}, #{email}, #{phone}, #{userType}, NOW())
     </insert>
 
@@ -28,12 +28,12 @@
     </select>
 
     <update id="updateByUserId">
-        update `user` set username=#{username}, password=#{password}, name=#{name}, email=#{email}, phone=#{phone}, userType=#{userType}
-        where userId = #{userId}
+        update `user` set username=#{username}, password=#{password}, name=#{name}, email=#{email}, phone=#{phone}, user_type=#{userType}
+        where user_id = #{userId}
     </update>
 
     <update id="deleteByUserId">
         update `user` set userusing = 0, deleteTime = NOW() 
-        where userId = #{userId}
+        where user_id = #{userId}
     </update>
 </mapper>

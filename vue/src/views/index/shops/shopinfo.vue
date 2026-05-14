@@ -18,16 +18,25 @@
                     </p>
                     <p class="mb-1">{{ data.shopData.shopType }}</p>
                     <h1>
-                        <a class="shop-name" href="#">{{ data.shopData.shopName }}</a>
+                        <a class="shop-name" href="#">{{
+                            data.shopData.shopName
+                        }}</a>
                     </h1>
                 </el-col>
                 <el-col :span="6" class="col-3">
                     <p class="text-center">
-                        <a class="font-weight-bold" style="font-size: 22px">TEL：{{ data.shopData.tel }}</a>
+                        <a class="font-weight-bold" style="font-size: 22px"
+                            >TEL：{{ data.shopData.tel }}</a
+                        >
                     </p>
                     <p class="text-center">お気軽にお問わせくださいませ♪</p>
                     <p class="text-center">
-                        <el-button type="warning" style="width: 100%" class="btn">拨打电话</el-button>
+                        <el-button
+                            type="warning"
+                            style="width: 100%"
+                            class="btn"
+                            >拨打电话</el-button
+                        >
                     </p>
                 </el-col>
             </el-row>
@@ -37,15 +46,25 @@
                     <table>
                         <tbody>
                             <tr>
-                                <th><span class="label-pill mb-2">预计消费</span></th>
+                                <th>
+                                    <span class="label-pill mb-2"
+                                        >预计消费</span
+                                    >
+                                </th>
                                 <td>{{ data.shopData.price }} RMB~</td>
                             </tr>
                             <tr>
-                                <th><span class="label-pill mb-2">营业时间</span></th>
+                                <th>
+                                    <span class="label-pill mb-2"
+                                        >营业时间</span
+                                    >
+                                </th>
                                 <td>{{ data.shopData.openTime }}</td>
                             </tr>
                             <tr>
-                                <th><span class="label-pill mb-2">营业日</span></th>
+                                <th>
+                                    <span class="label-pill mb-2">营业日</span>
+                                </th>
                                 <td>
                                     <table class="date-table">
                                         <tbody>
@@ -60,32 +79,102 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <p v-if="OpenDays.Sun" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Sun"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Mon" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Mon"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Tues" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Tues"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Wed" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Wed"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Thur" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Thur"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Fri" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Fri"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p v-if="OpenDays.Sat" class="table-text-center">√</p>
-                                                    <p v-else class="table-text-center">X</p>
+                                                    <p
+                                                        v-if="OpenDays.Sat"
+                                                        class="table-text-center"
+                                                    >
+                                                        √
+                                                    </p>
+                                                    <p
+                                                        v-else
+                                                        class="table-text-center"
+                                                    >
+                                                        X
+                                                    </p>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -99,11 +188,17 @@
                     <table>
                         <tbody>
                             <tr>
-                                <th><span class="label-pill mb-2">地址</span></th>
+                                <th>
+                                    <span class="label-pill mb-2">地址</span>
+                                </th>
                                 <td>{{ data.shopData.address }}</td>
                             </tr>
                             <tr>
-                                <th><span class="label-pill mb-2">最近的地铁</span></th>
+                                <th>
+                                    <span class="label-pill mb-2"
+                                        >最近的地铁</span
+                                    >
+                                </th>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -111,14 +206,27 @@
                 </el-col>
                 <el-col :span="6">
                     <div class="text-center">
-                        <p><el-button class="btn btn-primary">人员招募</el-button></p>
-                        <p><el-button class="btn btn-primary">收藏店面</el-button></p>
+                        <p>
+                            <el-button class="btn btn-primary"
+                                >人员招募</el-button
+                            >
+                        </p>
+                        <p>
+                            <el-button class="btn btn-primary"
+                                >收藏店面</el-button
+                            >
+                        </p>
                     </div>
                 </el-col>
             </el-row>
         </div>
         <div class="tab-container">
-            <el-tabs v-model="activeName" type="card" stretch="top" style="background-color: white">
+            <el-tabs
+                v-model="activeName"
+                type="card"
+                stretch="top"
+                style="background-color: white"
+            >
                 <el-tab-pane label="店铺详情" name="first">
                     <information />
                 </el-tab-pane>
@@ -134,7 +242,16 @@
                 </p>
             </div>
             <div>
-                <h1>超绝功能尚未学会（</h1>
+                <comment-input @submit="handleSubmit" />
+                <comment-area
+                    :comments="comments"
+                    :current-user-id="currentUserId"
+                    :has-more="hasMore"
+                    @like="handleLike"
+                    @delete="handleDelete"
+                    @reply="handleReply"
+                    @load-more="loadMore"
+                />
             </div>
         </el-header>
         <br /><br /><br /><br /><br /><br /><br />
@@ -142,18 +259,27 @@
 </template>
 
 <script setup name="shopinfo">
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import request from "../../../utils/request";
 import router from "../../../router";
 import Information from "./information.vue";
+import {
+    getCommentList,
+    getCommentReplies,
+    addComment,
+    deleteComment,
+    toggleLike,
+} from "../../../api/comments";
+import CommentArea from "../../components/comments/CommentArea.vue";
+import CommentInput from "../../components/comments/CommentInput.vue";
 
 const activeName = ref("first");
 
 const data = reactive({
     user: JSON.parse(localStorage.getItem("code_user") || "{}"),
-    shopId: router.currentRoute.value.query.shopId,
+    shopId: Number(router.currentRoute.value.query.shopId || 0),
     coverPath: "",
-    shopData: [],
+    shopData: {},
 });
 
 const OpenDays = reactive({
@@ -166,14 +292,22 @@ const OpenDays = reactive({
     Sat: 1,
 });
 
+const targetType = "shop";
+const comments = ref([]);
+const currentUserId = ref(data.user.userId || data.user.id || 0);
+const hasMore = ref(false);
+const loadingComments = ref(false);
+
 const load = () => {
-    request.get("shop/selectShopById/" + data.shopId).then((res) => {
+    if (!data.shopId) return;
+    request.get(`shop/selectShopById/${data.shopId}`).then((res) => {
         if (res.code === "200") {
             data.shopData = res.data;
             data.coverPath = res.data.coverPath;
             OpenDays.Sun = res.data.sun;
             OpenDays.Mon = res.data.mon;
-            OpenDays.Tues = res.data.wed;
+            OpenDays.Tues = res.data.tues ?? res.data.wed;
+            OpenDays.Wed = res.data.wed;
             OpenDays.Thur = res.data.thur;
             OpenDays.Fri = res.data.fri;
             OpenDays.Sat = res.data.sat;
@@ -182,7 +316,100 @@ const load = () => {
         }
     });
 };
-load();
+
+const normalizeComment = (comment) => ({
+    ...comment,
+    userName: comment.userName || `用户${comment.userId || ""}`,
+    parentUserName: comment.parentUserName || "",
+    avatarUrl: comment.avatarUrl || "/default-avatar.svg",
+    likeCount: comment.likeCount || 0,
+    replies: comment.replies || [],
+    isLiked: !!comment.isLiked,
+});
+
+const loadComments = async () => {
+    if (!data.shopId) return;
+    loadingComments.value = true;
+    try {
+        const res = await getCommentList(data.shopId, targetType);
+        if (res?.code === "200") {
+            const roots = (res.data || []).map(normalizeComment);
+            await Promise.all(
+                roots.map(async (comment) => {
+                    const replyRes = await getCommentReplies(comment.id);
+                    comment.replies =
+                        replyRes?.code === "200"
+                            ? (replyRes.data || []).map(normalizeComment)
+                            : [];
+                }),
+            );
+            comments.value = roots;
+        } else {
+            console.error("加载评论失败: ", res.msg || res);
+        }
+    } catch (error) {
+        console.error("加载评论失败:", error);
+    } finally {
+        loadingComments.value = false;
+    }
+};
+
+const handleSubmit = async (payload) => {
+    try {
+        const { content, parentId = 0, rootId = 0, parentUserId = 0 } = payload;
+        const commentData = {
+            targetId: data.shopId,
+            targetType,
+            userId: currentUserId.value,
+            content,
+            parentId,
+            rootId,
+            parentUserId,
+            avatarUrl: data.user.avatarUrl || "/default-avatar.svg",
+        };
+        await addComment(commentData);
+        await loadComments();
+    } catch (error) {
+        console.error("发表评论失败:", error);
+    }
+};
+
+const handleReply = async (payload) => {
+    await handleSubmit(payload);
+};
+
+const handleLike = async (comment) => {
+    try {
+        const action = comment.isLiked ? "unlike" : "like";
+        const res = await toggleLike(comment.id, currentUserId.value, action);
+        if (res?.code === "200") {
+            comment.isLiked = !comment.isLiked;
+            comment.likeCount += comment.isLiked ? 1 : -1;
+        }
+    } catch (error) {
+        console.error("点赞失败:", error);
+    }
+};
+
+const handleDelete = async (id) => {
+    try {
+        const res = await deleteComment(id);
+        if (res?.code === "200") {
+            comments.value = comments.value.filter((c) => c.id !== id);
+        }
+    } catch (error) {
+        console.error("删除评论失败:", error);
+    }
+};
+
+const loadMore = () => {
+    // 当前接口未实现分页，如有需要可后续补充分页参数
+};
+
+onMounted(() => {
+    load();
+    loadComments();
+});
 </script>
 
 <style scoped>

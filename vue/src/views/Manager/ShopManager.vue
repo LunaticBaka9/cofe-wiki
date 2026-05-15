@@ -45,10 +45,18 @@
                 :data="data.tableData"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
-                :header-cell-style="{ color: '#333', backgroundColor: '#ffb6c1' }"
+                :header-cell-style="{
+                    color: '#333',
+                    backgroundColor: '#ffb6c1',
+                }"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column fixed prop="shopId" label="店铺ID" width="100" />
+                <el-table-column
+                    fixed
+                    prop="shopId"
+                    label="店铺ID"
+                    width="100"
+                />
                 <el-table-column label="封面">
                     <template #default="scope">
                         <el-image
@@ -61,18 +69,60 @@
                 </el-table-column>
                 <el-table-column prop="shopName" label="店铺名称" width="150" />
                 <el-table-column prop="location" label="所在地区" width="150" />
-                <el-table-column prop="slogn" label="slogn" show-overflow-tooltip width="150" />
+                <el-table-column
+                    prop="slogn"
+                    label="slogn"
+                    show-overflow-tooltip
+                    width="150"
+                />
                 <el-table-column prop="tel" label="电话" width="150" />
-                <el-table-column prop="openTime" label="营业时间" show-overflow-tooltip width="150" />
-                <el-table-column prop="price" label="人均价格(RMB)" width="130" />
-                <el-table-column prop="intro" label="店铺介绍" width="150" show-overflow-tooltip />
-                <el-table-column prop="offical" label="官网" show-overflow-tooltip width="150" />
-                <el-table-column prop="twitter" label="twitter" show-overflow-tooltip width="150" />
-                <el-table-column prop="facebook" label="facebook" show-overflow-tooltip width="150" />
+                <el-table-column
+                    prop="openTime"
+                    label="营业时间"
+                    show-overflow-tooltip
+                    width="150"
+                />
+                <el-table-column
+                    prop="price"
+                    label="人均价格(RMB)"
+                    width="130"
+                />
+                <el-table-column
+                    prop="intro"
+                    label="店铺介绍"
+                    width="150"
+                    show-overflow-tooltip
+                />
+                <el-table-column
+                    prop="offical"
+                    label="官网"
+                    show-overflow-tooltip
+                    width="150"
+                />
+                <el-table-column
+                    prop="twitter"
+                    label="twitter"
+                    show-overflow-tooltip
+                    width="150"
+                />
+                <el-table-column
+                    prop="facebook"
+                    label="facebook"
+                    show-overflow-tooltip
+                    width="150"
+                />
                 <el-table-column fixed="right" label="操作" min-width="150">
                     <template #default="scope">
-                        <el-button size="small" @click="handleEidor(scope.row)"> 修改 </el-button>
-                        <el-button size="small" type="danger" @click="del(scope.row)"> 删除 </el-button>
+                        <el-button size="small" @click="handleEidor(scope.row)">
+                            修改
+                        </el-button>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="del(scope.row)"
+                        >
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -89,7 +139,12 @@
             />
         </div>
 
-        <el-dialog v-model="data.formVisible" title="店铺信息" width="600" destroy-on-close>
+        <el-dialog
+            v-model="data.formVisible"
+            title="店铺信息"
+            width="600"
+            destroy-on-close
+        >
             <el-form
                 ref="formRef"
                 :model="data.form"
@@ -98,7 +153,10 @@
                 style="padding: 20px 30px; max-width: auto"
             >
                 <el-form-item prop="shopName" label="名称">
-                    <el-input v-model="data.form.shopName" placeholder="店铺名称" />
+                    <el-input
+                        v-model="data.form.shopName"
+                        placeholder="店铺名称"
+                    />
                 </el-form-item>
                 <el-form-item label="封面">
                     <el-upload
@@ -115,18 +173,33 @@
                             <el-button type="primary">选择文件</el-button>
                         </template>
                         <template #tip>
-                            <div class="el-upload__tip text-red">上传图片尺寸应为 240 x 240 像素</div>
+                            <div class="el-upload__tip text-red">
+                                上传图片尺寸应为 240 x 240 像素
+                            </div>
                         </template>
                     </el-upload>
-                    <div v-if="data.form.coverPath" style="margin-top: 8px; margin-left: 20px">
-                        <el-image :src="data.form.coverPath" style="width: 80px; height: 80px; object-fit: cover" />
+                    <div
+                        v-if="data.form.coverPath"
+                        style="margin-top: 8px; margin-left: 20px"
+                    >
+                        <el-image
+                            :src="data.form.coverPath"
+                            style="width: 80px; height: 80px; object-fit: cover"
+                        />
                     </div>
                 </el-form-item>
                 <el-form-item prop="location" label="所在地区"
-                    ><el-input v-model="data.form.location" placeholder="所在地区" />
+                    ><el-input
+                        v-model="data.form.location"
+                        placeholder="所在地区"
+                    />
                 </el-form-item>
                 <el-form-item prop="address" label="地址">
-                    <el-input v-model="data.form.address" type="textarea" placeholder="请填写商店具体地址" />
+                    <el-input
+                        v-model="data.form.address"
+                        type="textarea"
+                        placeholder="请填写商店具体地址"
+                    />
                 </el-form-item>
                 <el-form-item prop="slogn" label="slogn">
                     <el-input v-model="data.form.slogn" type="textarea" />
@@ -141,7 +214,10 @@
                     <el-input v-model="data.form.price" />
                 </el-form-item>
                 <el-form-item prop="intro" label="商店简介">
-                    <el-input v-model="data.form.intro" type="textarea"></el-input>
+                    <el-input
+                        v-model="data.form.intro"
+                        type="textarea"
+                    ></el-input>
                 </el-form-item>
                 <el-form-item prop="offical" label="官网">
                     <el-input v-model="data.form.offical"></el-input>
@@ -155,7 +231,9 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="data.formVisible = false">取消</el-button>
+                    <el-button @click="data.formVisible = false"
+                        >取消</el-button
+                    >
                     <el-button type="primary" @click="save"> 保存 </el-button>
                 </div>
             </template>
@@ -195,9 +273,15 @@ const data = reactive({
     formVisible: false,
     form: {},
     rules: {
-        shopName: [{ required: true, message: "请填写商店名称", trigger: "blur" }],
-        location: [{ required: true, message: "请填写所在区域", trigger: "blur" }],
-        address: [{ required: true, message: "请填写商店地址", trigger: "blur" }],
+        shopName: [
+            { required: true, message: "请填写商店名称", trigger: "blur" },
+        ],
+        location: [
+            { required: true, message: "请填写所在区域", trigger: "blur" },
+        ],
+        address: [
+            { required: true, message: "请填写商店地址", trigger: "blur" },
+        ],
     },
     rows: [],
 });
@@ -265,6 +349,10 @@ const add = () => {
             ElMessage.error(res.msg);
         }
     });
+};
+
+const loadPermission = () => {
+    // request.get();
 };
 
 const update = (row) => {

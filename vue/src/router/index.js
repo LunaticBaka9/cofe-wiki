@@ -9,4 +9,24 @@ const router = createRouter({
     routes: [...routeIndex, ...routeAdmin, ...routeManager, ...routerWiki],
 });
 
+router.beforeEach((to, from, next) => {
+    const user = JSON.parse(window.localStorage.getItem("code_user") || "{}");
+    const isLoggedIn = Boolean(user && user.userId);
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        return next("/login");
+    }
+
+    if (to.meta.roles && to.meta.roles.length > 0) {
+        if (!isLoggedIn) {
+            return next("/login");
+        }
+        if (!to.meta.roles.includes(user.userType)) {
+            return next("/noPermission");
+        }
+    }
+
+    next();
+});
+
 export default router;

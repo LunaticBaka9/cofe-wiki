@@ -25,8 +25,9 @@ public class CommentsController {
     CommentsService commentsService;
 
     @GetMapping("/list/{targetId}/{targetType}")
-    public Result list(@PathVariable Long targetId, @PathVariable String targetType) {
-        List<Comments> list = commentsService.selectRootComments(targetId, targetType);
+    public Result list(@PathVariable Long targetId, @PathVariable String targetType,
+            @RequestParam(required = false) Long userId) {
+        List<Comments> list = commentsService.selectRootCommentsWithReplies(targetId, targetType, userId);
         return Result.success(list);
     }
 

@@ -1,6 +1,7 @@
 package com.maid_coffee.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -23,4 +24,6 @@ public class Comments {
     Boolean status;
     Date createdDate;
     Date updatedDate;
+    Boolean isLiked;
+    List<Comments> replies;
 }

@@ -212,6 +212,17 @@ load();
 </script>
 
 <style scoped>
+:deep(.el-carousel__item) {
+    display: flex;
+    justify-content: center;
+}
+
+:deep(.el-carousel__item img) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
 .table-bordered {
     margin-top: 20px;
     border: 1px solid rgba(0, 0, 0, 0.125);

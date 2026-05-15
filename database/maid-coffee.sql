@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 14/05/2026 17:58:56
+ Date: 15/05/2026 17:50:42
 */
 
 SET NAMES utf8mb4;
@@ -41,13 +41,36 @@ CREATE TABLE `comments`  (
   INDEX `idx_target`(`target_id` ASC, `target_type` ASC) USING BTREE,
   INDEX `idx_root_status_created`(`root_id` ASC, `status` ASC, `created_date` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
 INSERT INTO `comments` VALUES (1, 0, 'shop', NULL, 0, 'test', 0, 0, 1, 0, 0, 0, 0, '2026-05-11 17:56:00', '2026-05-12 14:21:59');
-INSERT INTO `comments` VALUES (2, 32005, 'shop', '', 16, '123', 0, 0, 1, 0, 0, 0, 0, '2026-05-14 17:54:22', '2026-05-14 17:54:22');
+INSERT INTO `comments` VALUES (2, 32005, 'shop', '', 16, '123', 1, 2, 1, 0, 0, 0, 0, '2026-05-14 17:54:22', '2026-05-15 17:43:09');
+INSERT INTO `comments` VALUES (3, 32005, 'shop', NULL, 16, '😀😀🤣🤣🤣❤️❤️❤️🤘👌👌👌🙏🙏🙏🙌🙌🙌👍👍👍🤪🤪🤪😝😜😛😛🥰', 1, 0, 0, 0, 2, 2, 16, '2026-05-15 17:40:02', '2026-05-15 17:41:35');
+INSERT INTO `comments` VALUES (4, 32005, 'shop', NULL, 16, 'testsetastsatesaetawestasetsea👌👌👌❤️❤️❤️💞💞💞', 15, 0, 1, 0, 2, 2, 16, '2026-05-15 17:41:57', '2026-05-15 17:42:48');
+
+-- ----------------------------
+-- Table structure for like_record
+-- ----------------------------
+DROP TABLE IF EXISTS `like_record`;
+CREATE TABLE `like_record`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `comment_id` bigint(20) NOT NULL COMMENT '评论ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_comment_user`(`comment_id` ASC, `user_id` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '点赞记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of like_record
+-- ----------------------------
+INSERT INTO `like_record` VALUES (1, 2, 16, '2026-05-15 17:39:37');
+INSERT INTO `like_record` VALUES (2, 3, 16, '2026-05-15 17:40:08');
+INSERT INTO `like_record` VALUES (3, 4, 16, '2026-05-15 17:42:31');
 
 -- ----------------------------
 -- Table structure for role

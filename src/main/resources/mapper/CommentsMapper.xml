@@ -34,8 +34,8 @@
             u.name AS user_name,
             pu.name AS parent_user_name
         FROM comments c
-        LEFT JOIN `user` u ON c.user_id = u.userId
-        LEFT JOIN `user` pu ON c.parent_user_id = pu.userId
+        LEFT JOIN `user` u ON c.user_id = u.user_id
+        LEFT JOIN `user` pu ON c.parent_user_id = pu.user_id
         WHERE c.target_id = #{targetId} AND c.target_type = #{targetType} AND c.status = 1 AND c.root_id = 0
         ORDER BY c.is_top DESC, c.created_date DESC
     </select>
@@ -48,8 +48,8 @@
             u.name AS user_name,
             pu.name AS parent_user_name
         FROM comments c
-        LEFT JOIN `user` u ON c.user_id = u.userId
-        LEFT JOIN `user` pu ON c.parent_user_id = pu.userId
+        LEFT JOIN `user` u ON c.user_id = u.user_id
+        LEFT JOIN `user` pu ON c.parent_user_id = pu.user_id
         WHERE c.root_id = #{rootId} AND c.status = 1
         ORDER BY c.created_date ASC
     </select>

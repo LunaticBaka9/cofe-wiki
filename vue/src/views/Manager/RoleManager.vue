@@ -33,7 +33,10 @@
                 border
                 :data="data.tableData"
                 style="width: 100%"
-                :header-cell-style="{ color: '#333', backgroundColor: '#ffb6c1' }"
+                :header-cell-style="{
+                    color: '#333',
+                    backgroundColor: '#ffb6c1',
+                }"
             >
                 <el-table-column prop="roleId" label="ID" width="80" />
                 <el-table-column prop="roleName" label="角色名称" />
@@ -43,8 +46,16 @@
                 <el-table-column prop="updateTime" label="更新时间" />
                 <el-table-column label="操作" min-width="150" fixed="right">
                     <template #default="scope">
-                        <el-button size="small" @click="handleEdit(scope.row)"> 修改 </el-button>
-                        <el-button size="small" type="danger" @click="del(scope.row)"> 删除 </el-button>
+                        <el-button size="small" @click="handleEdit(scope.row)">
+                            修改
+                        </el-button>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="del(scope.row)"
+                        >
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -62,13 +73,32 @@
             />
         </div>
 
-        <el-dialog v-model="data.formVisible" title="角色信息" width="500" destroy-on-close>
-            <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="100px" style="padding: 20px 30px">
+        <el-dialog
+            v-model="data.formVisible"
+            title="角色信息"
+            width="800"
+            destroy-on-close
+        >
+            <el-form
+                ref="formRef"
+                :model="data.form"
+                :rules="data.rules"
+                label-width="100px"
+                style="padding: 20px 30px"
+            >
                 <el-form-item prop="roleName" label="角色名称">
-                    <el-input v-model="data.form.roleName" autocomplete="off" placeholder="例如：超级管理员" />
+                    <el-input
+                        v-model="data.form.roleName"
+                        autocomplete="off"
+                        placeholder="例如：超级管理员"
+                    />
                 </el-form-item>
                 <el-form-item prop="roleCode" label="角色代码">
-                    <el-input v-model="data.form.roleCode" autocomplete="off" placeholder="例如：admin" />
+                    <el-input
+                        v-model="data.form.roleCode"
+                        autocomplete="off"
+                        placeholder="例如：admin"
+                    />
                 </el-form-item>
                 <el-form-item prop="description" label="描述">
                     <el-input
@@ -79,10 +109,35 @@
                         placeholder="请输入角色描述"
                     />
                 </el-form-item>
+                <el-form-item label="权限分配">
+                    <el-transfer
+                        v-model="selectedPermissions"
+                        :data="allPermissions"
+                        :titles="['所有权限', '已分配权限']"
+                        :props="{
+                            key: 'permissionId',
+                            label: 'permissionName',
+                        }"
+                        filterable
+                        :filter-method="filterMethod"
+                        filter-placeholder="请输入权限名称"
+                    >
+                        <template #default="{ option }">
+                            <div>
+                                <span>{{ option.permissionName }}</span>
+                                <span style="color: #999; font-size: 12px"
+                                    >({{ option.permissionCode }})</span
+                                >
+                            </div>
+                        </template>
+                    </el-transfer>
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="data.formVisible = false">取消</el-button>
+                    <el-button @click="data.formVisible = false"
+                        >取消</el-button
+                    >
                     <el-button type="primary" @click="save"> 保存 </el-button>
                 </div>
             </template>
@@ -94,7 +149,7 @@
 import request from "@/utils/request.js";
 import { onBeforeMount, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { Search } from '@element-plus/icons-vue';
+import { Search } from "@element-plus/icons-vue";
 
 onBeforeMount(() => {
     const userStr = localStorage.getItem("code_user");
@@ -125,12 +180,18 @@ const data = reactive({
         ],
         roleCode: [
             { required: true, message: "请填写角色代码", trigger: "blur" },
-            { pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/, message: "角色代码只能包含字母、数字和下划线", trigger: "blur" }
+            {
+                pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/,
+                message: "角色代码只能包含字母、数字和下划线",
+                trigger: "blur",
+            },
         ],
     },
 });
 
 const formRef = ref();
+const selectedPermissions = ref([]);
+const allPermissions = ref([]);
 
 const load = () => {
     request
@@ -159,24 +220,39 @@ const reset = () => {
     load();
 };
 
+const loadAllPermissions = () => {
+    request.get("permission/selectAllPermissions").then((res) => {
+        if (res.code === "200") {
+            allPermissions.value = res.data;
+        }
+    });
+};
+
 const handleAdd = () => {
     data.formVisible = true;
     data.form = {};
+    selectedPermissions.value = [];
+    loadAllPermissions();
 };
 
 const handleEdit = (row) => {
     data.form = JSON.parse(JSON.stringify(row));
     data.formVisible = true;
+    selectedPermissions.value = row.permissions
+        ? row.permissions.map((p) => p.permissionId)
+        : [];
+    loadAllPermissions();
 };
 
 const add = () => {
     formRef.value.validate((valid) => {
         if (valid) {
+            // 先添加角色
             request.post("/role/add", data.form).then((res) => {
                 if (res.code === "200") {
-                    data.formVisible = false;
-                    ElMessage.success("新增成功");
-                    load();
+                    // 再分配权限
+                    const roleId = res.data.roleId; // 假设返回了roleId
+                    updateRolePermissions(roleId);
                 } else {
                     ElMessage.error(res.msg);
                 }
@@ -190,11 +266,11 @@ const add = () => {
 const update = () => {
     formRef.value.validate((valid) => {
         if (valid) {
+            // 先更新角色信息
             request.put("/role/update", data.form).then((res) => {
                 if (res.code === "200") {
-                    data.formVisible = false;
-                    ElMessage.success("修改成功");
-                    load();
+                    // 再更新权限
+                    updateRolePermissions(data.form.roleId);
                 } else {
                     ElMessage.error(res.msg);
                 }
@@ -205,23 +281,48 @@ const update = () => {
     });
 };
 
+const updateRolePermissions = (roleId) => {
+    request
+        .put("/permission/updateRolePermissions", selectedPermissions.value, {
+            params: { roleId: roleId },
+        })
+        .then((res) => {
+            if (res.code === "200") {
+                data.formVisible = false;
+                ElMessage.success("保存成功");
+                load();
+            } else {
+                ElMessage.error(res.msg);
+            }
+        });
+};
+
 const del = (row) => {
     ElMessageBox.confirm("确认删除此角色？", "删除确认", { type: "warning" })
         .then(() => {
-            request.delete("/role/delete", { params: { roleId: row.roleId } }).then((res) => {
-                if (res.code === "200") {
-                    ElMessage.success("删除成功");
-                    load();
-                } else {
-                    ElMessage.error(res.msg);
-                }
-            });
+            request
+                .delete("/role/delete", { params: { roleId: row.roleId } })
+                .then((res) => {
+                    if (res.code === "200") {
+                        ElMessage.success("删除成功");
+                        load();
+                    } else {
+                        ElMessage.error(res.msg);
+                    }
+                });
         })
         .catch(() => {});
 };
 
 const save = () => {
     data.form.roleId ? update() : add();
+};
+
+const filterMethod = (query, item) => {
+    return (
+        item.permissionName.toLowerCase().includes(query.toLowerCase()) ||
+        item.permissionCode.toLowerCase().includes(query.toLowerCase())
+    );
 };
 </script>
 

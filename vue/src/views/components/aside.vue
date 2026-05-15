@@ -30,23 +30,32 @@
                     <el-menu-item index="2-2">咖啡文化</el-menu-item>
                 </router-link>
             </el-menu-item-group>
-            <router-link to="" class="custom-link" v-if="data.user.name">
+            <router-link to="" class="custom-link" v-if="showManagerMenu">
                 <el-menu-item class="card-title-primary">
                     <span class="text">管理</span>
                 </el-menu-item>
             </router-link>
-            <el-menu-item-group v-if="data.user.name">
-                <router-link to="/shopManager" class="custom-link">
+            <el-menu-item-group v-if="showManagerMenu">
+                <router-link
+                    to="/shopManager"
+                    class="custom-link"
+                    v-if="canManageShop"
+                >
                     <el-menu-item index="3-1">店面管理</el-menu-item>
                 </router-link>
-                <router-link to="/adminManager" class="custom-link">
-                    <el-menu-item index="3-2">管理员管理</el-menu-item>
+                <router-link
+                    to="/userManager"
+                    class="custom-link"
+                    v-if="canManageUser"
+                >
+                    <el-menu-item index="3-2">用户管理</el-menu-item>
                 </router-link>
-                <router-link to="/userManager" class="custom-link">
-                    <el-menu-item index="3-3">用户管理</el-menu-item>
-                </router-link>
-                <router-link to="/roleManager" class="custom-link">
-                    <el-menu-item index="3-4">用户角色管理</el-menu-item>
+                <router-link
+                    to="/roleManager"
+                    class="custom-link"
+                    v-if="canManageRole"
+                >
+                    <el-menu-item index="3-3">用户角色管理</el-menu-item>
                 </router-link>
             </el-menu-item-group>
         </el-menu>
@@ -61,6 +70,22 @@ const route = useRoute();
 const data = reactive({
     user: JSON.parse(localStorage.getItem("code_user") || "{}"),
 });
+
+const canManageShop = computed(() =>
+    ["admin", "editor"].includes(data.user.userType),
+);
+const canManageAdmin = computed(() => data.user.userType === "admin");
+const canManageUser = computed(() => data.user.userType === "admin");
+const canManageRole = computed(() => data.user.userType === "admin");
+const canManagePermission = computed(() => data.user.userType === "admin");
+const showManagerMenu = computed(
+    () =>
+        canManageShop.value ||
+        canManageAdmin.value ||
+        canManageUser.value ||
+        canManageRole.value ||
+        canManagePermission.value,
+);
 
 // 根据当前路由计算激活的菜单项
 const activeIndex = computed(() => {
@@ -97,10 +122,10 @@ const activeIndex = computed(() => {
     if (path.startsWith("/shopManager")) {
         return "3-1";
     }
-    if (path.startsWith("/adminManager")) {
+    if (path.startsWith("/userManager")) {
         return "3-2";
     }
-    if (path.startsWith("/userManager")) {
+    if (path.startsWith("/roleManager")) {
         return "3-3";
     }
 

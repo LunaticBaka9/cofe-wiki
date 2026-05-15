@@ -12,7 +12,7 @@ public interface CommentsMapper {
     /**
      * 根据目标ID获取一级评论列表
      */
-    List<Comments> selectRootComments(Long targetId, String targetType);
+    List<Comments> selectRootComments(@Param("targetId") Long targetId, @Param("targetType") String targetType);
 
     /**
      * 根据根评论ID获取所有回复列表

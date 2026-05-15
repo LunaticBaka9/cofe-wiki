@@ -263,15 +263,9 @@ import { reactive, ref, onMounted } from "vue";
 import request from "../../../utils/request";
 import router from "../../../router";
 import Information from "./information.vue";
-import {
-    getCommentList,
-    getCommentReplies,
-    addComment,
-    deleteComment,
-    toggleLike,
-} from "../../../api/comments";
 import CommentArea from "../../components/comments/CommentArea.vue";
 import CommentInput from "../../components/comments/CommentInput.vue";
+import { ElMessage } from "element-plus";
 
 const activeName = ref("first");
 
@@ -317,93 +311,119 @@ const load = () => {
     });
 };
 
-const normalizeComment = (comment) => ({
-    ...comment,
-    userName: comment.userName || `用户${comment.userId || ""}`,
-    parentUserName: comment.parentUserName || "",
-    avatarUrl: comment.avatarUrl || "/default-avatar.svg",
-    likeCount: comment.likeCount || 0,
-    replies: comment.replies || [],
-    isLiked: !!comment.isLiked,
-});
-
 const loadComments = async () => {
     if (!data.shopId) return;
     loadingComments.value = true;
     try {
-        const res = await getCommentList(data.shopId, targetType);
-        if (res?.code === "200") {
-            const roots = (res.data || []).map(normalizeComment);
-            await Promise.all(
-                roots.map(async (comment) => {
-                    const replyRes = await getCommentReplies(comment.id);
-                    comment.replies =
-                        replyRes?.code === "200"
-                            ? (replyRes.data || []).map(normalizeComment)
-                            : [];
-                }),
-            );
-            comments.value = roots;
+        const res = await request.get(`/comments/list/${data.shopId}/shop`, {
+            params: { userId: currentUserId.value || undefined },
+        });
+        if (res.code === "200") {
+            comments.value = res.data;
         } else {
-            console.error("加载评论失败: ", res.msg || res);
+            ElMessage.error(res.msg);
         }
     } catch (error) {
         console.error("加载评论失败:", error);
+        ElMessage.error("加载评论失败");
     } finally {
         loadingComments.value = false;
     }
 };
 
-const handleSubmit = async (payload) => {
+const loadMore = () => {
+    // 当前接口未实现分页，如有需要可后续补充分页参数
+};
+
+// 提交评论
+const handleSubmit = async (formData) => {
     try {
-        const { content, parentId = 0, rootId = 0, parentUserId = 0 } = payload;
-        const commentData = {
+        const res = await request.post("/comments/add", {
             targetId: data.shopId,
-            targetType,
+            targetType: "shop",
             userId: currentUserId.value,
-            content,
-            parentId,
-            rootId,
-            parentUserId,
-            avatarUrl: data.user.avatarUrl || "/default-avatar.svg",
-        };
-        await addComment(commentData);
-        await loadComments();
+            content: formData.content,
+            parentId: formData.parentId || 0,
+            rootId: formData.rootId || 0,
+            parentUserId: formData.parentUserId || 0,
+        });
+        if (res.code === "200") {
+            ElMessage.success("评论成功");
+            loadComments();
+        } else {
+            ElMessage.error(res.msg || "评论失败");
+        }
     } catch (error) {
-        console.error("发表评论失败:", error);
+        console.error("评论失败:", error);
+        ElMessage.error("评论失败");
     }
 };
 
-const handleReply = async (payload) => {
-    await handleSubmit(payload);
+// 处理回复
+const handleReply = async (replyData) => {
+    try {
+        const res = await request.post("/comments/add", {
+            targetId: data.shopId,
+            targetType: "shop",
+            userId: currentUserId.value,
+            content: replyData.content,
+            parentId: replyData.parentId || 0,
+            rootId: replyData.rootId || 0,
+            parentUserId: replyData.parentUserId || 0,
+        });
+        if (res.code === "200") {
+            ElMessage.success("回复成功");
+            loadComments();
+        } else {
+            ElMessage.error(res.msg || "回复失败");
+        }
+    } catch (error) {
+        console.error("回复失败:", error);
+        ElMessage.error("回复失败");
+    }
 };
 
+// 处理点赞
 const handleLike = async (comment) => {
     try {
         const action = comment.isLiked ? "unlike" : "like";
-        const res = await toggleLike(comment.id, currentUserId.value, action);
-        if (res?.code === "200") {
+        const res = await request.post(`/comments/like/${comment.id}`, null, {
+            params: {
+                userId: currentUserId.value,
+                action: action,
+            },
+        });
+        if (res.code === "200") {
+            // 更新本地评论数据
             comment.isLiked = !comment.isLiked;
-            comment.likeCount += comment.isLiked ? 1 : -1;
+            comment.likeCount = comment.likeCount
+                ? comment.likeCount + (comment.isLiked ? 1 : -1)
+                : comment.isLiked
+                  ? 1
+                  : 0;
+        } else {
+            ElMessage.error(res.msg || "操作失败");
         }
     } catch (error) {
         console.error("点赞失败:", error);
+        ElMessage.error("操作失败");
     }
 };
 
+// 处理删除
 const handleDelete = async (id) => {
     try {
-        const res = await deleteComment(id);
-        if (res?.code === "200") {
-            comments.value = comments.value.filter((c) => c.id !== id);
+        const res = await request.delete(`/comments/${id}`);
+        if (res.code === "200") {
+            ElMessage.success("删除成功");
+            loadComments();
+        } else {
+            ElMessage.error(res.msg || "删除失败");
         }
     } catch (error) {
-        console.error("删除评论失败:", error);
+        console.error("删除失败:", error);
+        ElMessage.error("删除失败");
     }
-};
-
-const loadMore = () => {
-    // 当前接口未实现分页，如有需要可后续补充分页参数
 };
 
 onMounted(() => {

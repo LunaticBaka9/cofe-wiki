@@ -1,23 +1,30 @@
 const routeManager = [
     {
-        path: "/adminManager",
-        name: "adminManager",
-        component: () => import("@/views/Manager/AdminManager.vue"),
-    },
-    {
         path: "/userManager",
         name: "userManager",
         component: () => import("@/views/Manager/UserManager.vue"),
+        meta: {
+            requiresAuth: true,
+            roles: ["admin"],
+        },
     },
     {
         path: "/shopManager",
         name: "shopManager",
         component: () => import("@/views/Manager/ShopManager.vue"),
+        meta: {
+            requiresAuth: true,
+            roles: ["admin", "editor"],
+        },
     },
     {
         path: "/roleManager",
         name: "roleManager",
         component: () => import("@/views/Manager/RoleManager.vue"),
+        meta: {
+            requiresAuth: true,
+            roles: ["admin"],
+        },
     },
     {
         path: "/noPermission",

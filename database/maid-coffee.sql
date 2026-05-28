@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 15/05/2026 17:50:42
+ Date: 28/05/2026 17:59:07
 */
 
 SET NAMES utf8mb4;
@@ -132,7 +132,7 @@ INSERT INTO `shop` VALUES (7795, 'がさいれ！', '新店开业！位于歌舞
 INSERT INTO `shop` VALUES (7762, 'cafe&bar Funcy', '超过15种服装任你挑选，随心所欲更换装扮！', 141, '050-31770-2336', '大阪府大阪市浪速区日本橋4-8-17 KIKビル1階', '平日（周一至周五）：18:00 ～ 23:00周末及节假日：15:00 ～ 23:00', '大阪府', 1, 'api/img/shop/cover/shop_image_7762_240x240.jpg', '咖啡厅BAR', NULL);
 INSERT INTO `shop` VALUES (7660, 'SleepingForest（スリーピング フォレスト）', '这是一家以“沉睡的森林”为主题的特色咖啡馆。', 141, '080-9709-1717', '大阪府大阪府大阪市浪速区難波中２丁目６−２１', '', '大阪府', 1, 'api/img/shop/cover/shop_image_2164_240x240.jpg', '咖啡厅BAR', NULL);
 INSERT INTO `shop` VALUES (7400, 'mirai connect (ミラコネ)', '这是一家以“VOCALOID（虚拟歌姬）与未来”为主题的女仆咖啡厅＆酒吧！', 70, '0924065933', '福岡県福岡市中央区天神３丁目１４－２', '', '福岡県', 1, 'api/img/shop/cover/shop_image_2164_240x240.jpg', '咖啡厅BAR', NULL);
-INSERT INTO `shop` VALUES (100, 'test', 'test', 0, '12312312312312', '321312312312', 'sdfafadsfasdfasdf', '上海', 1, 'api/img/shop/cover/shop_image_2164_240x240.jpg', NULL, '2026-01-04 12:39:54');
+INSERT INTO `shop` VALUES (100, 'test', 'test', 0, '12312312312312', '321312312312', 'sdfafadsfasdfasdf', '上海', 1, 'api/img/shop/cover/shop_image_100_240x240.jpg', NULL, '2026-05-28 17:58:30');
 INSERT INTO `shop` VALUES (32008, 'asdfasdf', NULL, 90, NULL, 'sadfasdfasdf', NULL, 'asdfsadf', 0, 'api/img/shop/cover/shop_image_2164_240x240.jpg', NULL, '2026-01-02 17:20:47');
 
 -- ----------------------------
@@ -150,13 +150,6 @@ CREATE TABLE `shopdetails`  (
   `facebook` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `menu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `tags` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `mon` int(4) NULL DEFAULT NULL,
-  `tues` int(4) NULL DEFAULT NULL,
-  `wed` int(4) NULL DEFAULT NULL,
-  `thur` int(4) NULL DEFAULT NULL,
-  `fri` int(4) NULL DEFAULT NULL,
-  `sat` int(4) NULL DEFAULT NULL,
-  `sun` int(4) NULL DEFAULT NULL,
   `pmenu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `shopImg` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`shopId`) USING BTREE
@@ -165,19 +158,19 @@ CREATE TABLE `shopdetails`  (
 -- ----------------------------
 -- Records of shopdetails
 -- ----------------------------
-INSERT INTO `shopdetails` VALUES ('世界末日不良们聚集的酒馆！哥特式女仆服务的柏咖啡厅！\r\n\r\n每年由女仆煮大麦制作的原创手工啤酒大受欢迎！这里提供各种美味和有趣的美食，包括禁止的CBD啤酒！还可以品尝女仆亲手做的料理哦！ 让人联想到世界末日的涂鸦艺术和真实赛博朋克风格的异空间值得一看！\r\n\r\n只充电1100日元 \r\n时间无限制 / 卡拉OK唱到饱 / 有原创鸡尾酒特典 / 卡拉OK点播OK \r\n从JR柏站东口步行5分钟（从上野乘坐电车直通约30分钟）', 32005, ' 可以制作手工啤酒的咖啡厅（con cofe）', '既能唱卡拉ok又能做DJ ! ！', '充满涂鸦艺术的网络空间', 'https://lit.link/kurotsukikswd ', 'https://x.com/kurotsuki_kswd', 'https://www.facebook.com/kurotsukikswd ', '充值1,100日元\r\n\r\n时间无限制/卡拉ok无限畅唱\r\n饮料700日元起，食物600日元起可以订购。\r\n\r\n没有任何额外费用！请每小时至少订购1个订单！可以进行切奇摄影，但这是原创鸡尾酒的特典，详情请咨询演员。', '面向女性/面向男性/团体OK /商品销售/酒精/可刷卡/活动日/每日菜单/可预约/可包场/原创制服/可吸烟/优惠券/热闹/深夜营业/大提琴/现场演出/电源/卡拉ok /', 0, 1, 1, 1, 1, 1, 0, '无限量生啤酒是心脏地带\r\n丰富的威士忌系列\r\n香槟1万日元以下~', '/api/img/shop/shopTitleImage/shop_titleimage1_32005_1240.jpg,/api/img/shop/shopTitleImage/shop_titleimage2_32005_1240.jpg,/api/img/shop/shopTitleImage/shop_titleimage3_32005_1240.jpg');
-INSERT INTO `shopdetails` VALUES ('20xx年，毁灭世界的末期\r\n欢迎来到伫立在东方魔窟中的街角酒馆\r\n这里是流浪汉和流氓聚集的不良少年们的聚集地\r\n与朋友见面，喝酒，分享\r\n干杯是我们的魔法语言，那么今晚也开始宴会吧。\r\n', 15242, '穿着特攻服的女仆迎接长发女仆', '免费携带！食物自带&外卖OK', '连LiveHouse和俱乐部都自愧不如的DJ展台', 'https://lit.link/kurotsukibay', 'https://x.com/kurotsuki_bay', 'https://www.facebook.com/kurotsukibay', '充值1,100日元（时间无限制）\r\n收费制\r\n筱木¥800（含税¥880）/60分钟+1饮料\r\n\r\n无限畅饮制\r\n非阿尔¥2,000（含税¥2,200）/60分钟\r\n酒精¥3,000（含税¥3,300）/60分钟\r\n附啤酒¥3,300（含税¥3,630）/60分钟\r\n\r\n携带和外卖OK（不可手工制作）\r\n卡拉ok唱到饱\r\n随便扔飞镖', '面向女性 / 面向男性 / 团体OK / 商品销售 / 积分卡 / 酒精 / 手机电波 / 无线局域网 / 可刷卡支付 / 活动日 / 可预约 / 可包场 / 原创制服 / 可吸烟 / 优惠券 / 热闹 / 深夜营业 / 大提琴 / 电源 / 手机充电服务 / 卡拉ok  / 畅饮菜单 /', 1, 1, 1, 1, 1, 1, 1, NULL, NULL);
-INSERT INTO `shopdetails` VALUES ('大阪日本桥唯一以乡村为概念的店\r\n非常适合咖啡初学者^ ^\r\n因为要招募开业工作人员', 12522, '大阪日本桥唯一的乡村概念', '制服5种', NULL, 'https://twitter.com/annette_rr1', 'https://twitter.com/annette_rr1', '', '软饮料\r\n酒精\r\n\r\n只在周末和节假日吐司专门店！', '欢迎回来/午餐套餐/商品销售/酒精/无线网络/每日菜单/悠闲/萌萌蛋包饭/切奇/手机充电服务/无限畅饮菜单/', 1, 1, 1, 1, 1, 1, 1, NULL, NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 12431, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 12424, NULL, NULL, NULL, 'https://prettydevilmate.com', 'https://x.com/prettydevilmate', NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, NULL, NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 8000, '卡拉OK畅唱尽享！', '可爱的中式服装', '有很多擅长聊天的女孩子！是一家让人玩得开心的店', NULL, 'https://x.com/anison_paopao', NULL, '畅饮＋卡拉OK无限欢唱（含入场费）1小时：2,500日元延长每30分钟：1,000日元通宵套餐（至清晨）：10,000日元', '酒精饮品 / 热闹氛围 / 深夜营业 / 畅饮菜单 /', 0, 1, 0, 0, 0, 1, 1, '畅饮畅唱最长6小时！通宵套餐仅需10,000日元', NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7823, NULL, NULL, NULL, 'https://asobu.space/', 'https://x.com/kp_value', NULL, NULL, '可与店员一起玩游戏/女性友好/提供积分卡/生日特别优惠/提供酒精饮品/手机信号良好/提供免费无线网络（Wi-Fi）/支持信用卡支付/举办主题活动日/独家原创制服/提供手机充电服务/设有畅饮菜单/', 1, 1, 1, 1, 1, 1, 1, NULL, NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7804, '独家原创的长款女仆制服', '交通便利，步行即可到达银座站、新桥站', '饮品选择丰富，还有女仆亲手制作的餐点', 'http://melfi.tokyo', 'https://x.com/melfi_maid', NULL, '含入场费的畅饮套餐：1小时：主人様 2,500日元／小姐様 2,000日元延长每30分钟：1,000日元3小时畅享套餐：6,000日元提供酒瓶寄存优惠', NULL, 1, 0, 1, 1, 1, 1, 1, '宅邸主厨随心手作料理', NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7795, NULL, NULL, NULL, 'https://asobu.space/', 'https://x.com/kp_value', NULL, '我们提供超值畅饮套餐☆18:00～23:00（另加10%消费税 + 10%服务费）男性：2,500日元／小时女性：1,500日元／小时23:00～次日5:00（另加10%消费税 + 15%服务费）男性：3,000日元／小时女性：1,800日元／小时此外，我们也准备了丰富多样的娱乐项目☆店员饮品：800日元店员敬酒（Shot）：1,500日元拍立得合影（Cheki）：1,000日元酒瓶寄存：5,000日元起普通点歌（卡拉OK）：300日元／首店员合唱（卡拉OK）：800日元／首', '可与店员一起玩游戏/提供拍照服务/适合女性顾客/也欢迎男性顾客/接受团体预约/提供积分卡/供应酒精饮品/免费Wi-Fi（无线网络）/支持信用卡支付/可提前预约/设有吸烟区/氛围热闹（わいわい）/也有安静放松的区域（まったり）/提供男装角色服务/可拍立得（Cheki）合影/提供电源插座', 1, 0, 1, 1, 1, 1, 1, NULL, NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7762, '和可爱的女孩们一起欢闹玩耍', '独一无二的主题概念', '简单易懂的系统，最适合初次体验女仆咖啡馆', 'https://twitter.com/cafebarFuncy', 'https://x.com/cafebarfuncy', NULL, '酒精饮料和无酒精饮料畅饮40分钟，仅需3000日元！', '欢迎光临／欢迎回来！/专为男性顾客打造/提供酒精饮品/支持信用卡支付/热闹欢乐的氛围（わいわい）/可拍立得合影（チェキ）/有偶像风格店员登场/设有畅饮菜单', 1, 1, 1, 1, 1, 1, 1, '', NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7660, '以“沉睡的森林”为主题', '女仆制服灵感源自《玛琳菲森》（Maleficent）', '积极拓展直播等网络内容企划', NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, '', NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 7400, '店内播放VOCALOID背景音乐', '充满未来感的店内装潢', NULL, 'https://miraiconnect.business.site/', 'https://x.com/connectmirai', NULL, NULL, '提供积分卡/供应酒精饮品/免费Wi-Fi（无线网络）/支持信用卡支付/定期举办主题活动日（Event Day）/可包场使用/独家原创制服/设有吸烟区/氛围可热闹（わいわい）也可放松（まったり）/营业至深夜/可拍立得合影（チェキ）/设有畅饮菜单', 1, 1, 1, 1, 1, 1, 1, '', NULL);
-INSERT INTO `shopdetails` VALUES (NULL, 32007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, NULL, NULL);
+INSERT INTO `shopdetails` VALUES ('世界末日不良们聚集的酒馆！哥特式女仆服务的柏咖啡厅！\r\n\r\n每年由女仆煮大麦制作的原创手工啤酒大受欢迎！这里提供各种美味和有趣的美食，包括禁止的CBD啤酒！还可以品尝女仆亲手做的料理哦！ 让人联想到世界末日的涂鸦艺术和真实赛博朋克风格的异空间值得一看！\r\n\r\n只充电1100日元 \r\n时间无限制 / 卡拉OK唱到饱 / 有原创鸡尾酒特典 / 卡拉OK点播OK \r\n从JR柏站东口步行5分钟（从上野乘坐电车直通约30分钟）', 32005, ' 可以制作手工啤酒的咖啡厅（con cofe）', '既能唱卡拉ok又能做DJ ! ！', '充满涂鸦艺术的网络空间', 'https://lit.link/kurotsukikswd ', 'https://x.com/kurotsuki_kswd', 'https://www.facebook.com/kurotsukikswd ', '充值1,100日元\r\n\r\n时间无限制/卡拉ok无限畅唱\r\n饮料700日元起，食物600日元起可以订购。\r\n\r\n没有任何额外费用！请每小时至少订购1个订单！可以进行切奇摄影，但这是原创鸡尾酒的特典，详情请咨询演员。', '面向女性/面向男性/团体OK /商品销售/酒精/可刷卡/活动日/每日菜单/可预约/可包场/原创制服/可吸烟/优惠券/热闹/深夜营业/大提琴/现场演出/电源/卡拉ok /', '无限量生啤酒是心脏地带\r\n丰富的威士忌系列\r\n香槟1万日元以下~', '/api/img/shop/shopTitleImage/shop_titleimage1_32005_1240.jpg,/api/img/shop/shopTitleImage/shop_titleimage2_32005_1240.jpg,/api/img/shop/shopTitleImage/shop_titleimage3_32005_1240.jpg');
+INSERT INTO `shopdetails` VALUES ('20xx年，毁灭世界的末期\r\n欢迎来到伫立在东方魔窟中的街角酒馆\r\n这里是流浪汉和流氓聚集的不良少年们的聚集地\r\n与朋友见面，喝酒，分享\r\n干杯是我们的魔法语言，那么今晚也开始宴会吧。\r\n', 15242, '穿着特攻服的女仆迎接长发女仆', '免费携带！食物自带&外卖OK', '连LiveHouse和俱乐部都自愧不如的DJ展台', 'https://lit.link/kurotsukibay', 'https://x.com/kurotsuki_bay', 'https://www.facebook.com/kurotsukibay', '充值1,100日元（时间无限制）\r\n收费制\r\n筱木¥800（含税¥880）/60分钟+1饮料\r\n\r\n无限畅饮制\r\n非阿尔¥2,000（含税¥2,200）/60分钟\r\n酒精¥3,000（含税¥3,300）/60分钟\r\n附啤酒¥3,300（含税¥3,630）/60分钟\r\n\r\n携带和外卖OK（不可手工制作）\r\n卡拉ok唱到饱\r\n随便扔飞镖', '面向女性 / 面向男性 / 团体OK / 商品销售 / 积分卡 / 酒精 / 手机电波 / 无线局域网 / 可刷卡支付 / 活动日 / 可预约 / 可包场 / 原创制服 / 可吸烟 / 优惠券 / 热闹 / 深夜营业 / 大提琴 / 电源 / 手机充电服务 / 卡拉ok  / 畅饮菜单 /', NULL, NULL);
+INSERT INTO `shopdetails` VALUES ('大阪日本桥唯一以乡村为概念的店\r\n非常适合咖啡初学者^ ^\r\n因为要招募开业工作人员', 12522, '大阪日本桥唯一的乡村概念', '制服5种', NULL, 'https://twitter.com/annette_rr1', 'https://twitter.com/annette_rr1', '', '软饮料\r\n酒精\r\n\r\n只在周末和节假日吐司专门店！', '欢迎回来/午餐套餐/商品销售/酒精/无线网络/每日菜单/悠闲/萌萌蛋包饭/切奇/手机充电服务/无限畅饮菜单/', NULL, NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 12431, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 12424, NULL, NULL, NULL, 'https://prettydevilmate.com', 'https://x.com/prettydevilmate', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 8000, '卡拉OK畅唱尽享！', '可爱的中式服装', '有很多擅长聊天的女孩子！是一家让人玩得开心的店', NULL, 'https://x.com/anison_paopao', NULL, '畅饮＋卡拉OK无限欢唱（含入场费）1小时：2,500日元延长每30分钟：1,000日元通宵套餐（至清晨）：10,000日元', '酒精饮品 / 热闹氛围 / 深夜营业 / 畅饮菜单 /', '畅饮畅唱最长6小时！通宵套餐仅需10,000日元', NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7823, NULL, NULL, NULL, 'https://asobu.space/', 'https://x.com/kp_value', NULL, NULL, '可与店员一起玩游戏/女性友好/提供积分卡/生日特别优惠/提供酒精饮品/手机信号良好/提供免费无线网络（Wi-Fi）/支持信用卡支付/举办主题活动日/独家原创制服/提供手机充电服务/设有畅饮菜单/', NULL, NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7804, '独家原创的长款女仆制服', '交通便利，步行即可到达银座站、新桥站', '饮品选择丰富，还有女仆亲手制作的餐点', 'http://melfi.tokyo', 'https://x.com/melfi_maid', NULL, '含入场费的畅饮套餐：1小时：主人様 2,500日元／小姐様 2,000日元延长每30分钟：1,000日元3小时畅享套餐：6,000日元提供酒瓶寄存优惠', NULL, '宅邸主厨随心手作料理', NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7795, NULL, NULL, NULL, 'https://asobu.space/', 'https://x.com/kp_value', NULL, '我们提供超值畅饮套餐☆18:00～23:00（另加10%消费税 + 10%服务费）男性：2,500日元／小时女性：1,500日元／小时23:00～次日5:00（另加10%消费税 + 15%服务费）男性：3,000日元／小时女性：1,800日元／小时此外，我们也准备了丰富多样的娱乐项目☆店员饮品：800日元店员敬酒（Shot）：1,500日元拍立得合影（Cheki）：1,000日元酒瓶寄存：5,000日元起普通点歌（卡拉OK）：300日元／首店员合唱（卡拉OK）：800日元／首', '可与店员一起玩游戏/提供拍照服务/适合女性顾客/也欢迎男性顾客/接受团体预约/提供积分卡/供应酒精饮品/免费Wi-Fi（无线网络）/支持信用卡支付/可提前预约/设有吸烟区/氛围热闹（わいわい）/也有安静放松的区域（まったり）/提供男装角色服务/可拍立得（Cheki）合影/提供电源插座', NULL, NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7762, '和可爱的女孩们一起欢闹玩耍', '独一无二的主题概念', '简单易懂的系统，最适合初次体验女仆咖啡馆', 'https://twitter.com/cafebarFuncy', 'https://x.com/cafebarfuncy', NULL, '酒精饮料和无酒精饮料畅饮40分钟，仅需3000日元！', '欢迎光临／欢迎回来！/专为男性顾客打造/提供酒精饮品/支持信用卡支付/热闹欢乐的氛围（わいわい）/可拍立得合影（チェキ）/有偶像风格店员登场/设有畅饮菜单', '', NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7660, '以“沉睡的森林”为主题', '女仆制服灵感源自《玛琳菲森》（Maleficent）', '积极拓展直播等网络内容企划', NULL, NULL, NULL, NULL, NULL, '', NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 7400, '店内播放VOCALOID背景音乐', '充满未来感的店内装潢', NULL, 'https://miraiconnect.business.site/', 'https://x.com/connectmirai', NULL, NULL, '提供积分卡/供应酒精饮品/免费Wi-Fi（无线网络）/支持信用卡支付/定期举办主题活动日（Event Day）/可包场使用/独家原创制服/设有吸烟区/氛围可热闹（わいわい）也可放松（まったり）/营业至深夜/可拍立得合影（チェキ）/设有畅饮菜单', '', NULL);
+INSERT INTO `shopdetails` VALUES (NULL, 32007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for user

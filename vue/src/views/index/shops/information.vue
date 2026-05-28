@@ -17,15 +17,21 @@
                         <td>
                             <ul>
                                 <li class="md-5">
-                                    <span class="label label-primary">其一</span>
+                                    <span class="label label-primary"
+                                        >其一</span
+                                    >
                                     {{ data.shopData.obs1 }}
                                 </li>
                                 <li class="md-5">
-                                    <span class="label label-primary">其二</span>
+                                    <span class="label label-primary"
+                                        >其二</span
+                                    >
                                     {{ data.shopData.obs2 }}
                                 </li>
                                 <li class="md-5">
-                                    <span class="label label-primary">其三</span>
+                                    <span class="label label-primary"
+                                        >其三</span
+                                    >
                                     {{ data.shopData.obs3 }}
                                 </li>
                             </ul>
@@ -64,54 +70,6 @@
                     <tr>
                         <th width="130">营业时间</th>
                         <td>{{ data.shopData.openTime }}</td>
-                    </tr>
-                    <tr>
-                        <th width="130">营业日</th>
-                        <td width="89%">
-                            <table class="date-table">
-                                <tbody>
-                                    <tr>
-                                        <th>日</th>
-                                        <th>一</th>
-                                        <th>二</th>
-                                        <th>三</th>
-                                        <th>四</th>
-                                        <th>五</th>
-                                        <th>六</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p v-if="OpenDays.Sun" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Mon" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Tues" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Wed" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Thur" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Fri" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                        <td>
-                                            <p v-if="OpenDays.Sat" class="table-text-center">√</p>
-                                            <p v-else class="table-text-center">X</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
                     </tr>
                     <tr>
                         <th width="130">详细分类</th>
@@ -181,28 +139,12 @@ const data = reactive({
     shopData: [],
 });
 
-const OpenDays = reactive({
-    Sun: 1,
-    Mon: 1,
-    Tues: 1,
-    Wed: 1,
-    Thur: 1,
-    Fri: 1,
-    Sat: 1,
-});
-
 const load = () => {
     request.get("shop/selectShopById/" + data.shopId).then((res) => {
         if (res.code === "200") {
             data.shopData = res.data;
             data.coverPath = res.data.coverPath;
             data.shopData.shopImg = res.data.shopImg.split(",");
-            OpenDays.Sun = res.data.sun;
-            OpenDays.Mon = res.data.mon;
-            OpenDays.Tues = res.data.wed;
-            OpenDays.Thur = res.data.thur;
-            OpenDays.Fri = res.data.fri;
-            OpenDays.Sat = res.data.sat;
         } else {
             ElMessage.error(res.msg);
         }

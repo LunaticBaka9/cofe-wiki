@@ -37,8 +37,6 @@
         update `shop` left join `shopdetails` using (shopId)
         set shopName=#{shopName}, slogn=#{slogn}, location=#{location}, address=#{address}, tel=#{tel}, price=#{price}, 
         openTime=#{openTime}, shopType=#{shopType}, 
-        <!-- 开店星期 -->
-        mon=#{mon}, tues=#{tues}, wed=#{wed}, thur=#{thur}, fri=#{fri}, sat=#{sat}, sun=#{sun},
         <!-- 详情信息 -->
         intro=#{intro}, obs1=#{obs1}, obs2=#{obs2}, obs3=#{obs3}, 
         menu=#{menu}, pmenu=#{pmenu}, tags=#{tags}, shopImg=#{shopImg},

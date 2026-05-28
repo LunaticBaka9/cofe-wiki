@@ -168,6 +168,7 @@
                         :on-error="handleUploadError"
                         :show-file-list="false"
                         accept="image/*"
+                        :data="{ shopId: data.form.shopId }"
                     >
                         <template #trigger>
                             <el-button type="primary">选择文件</el-button>
@@ -410,7 +411,7 @@ const deleteBatch = () => {
         .catch((err) => {});
 };
 
-const uploadUrl = "/api/file/uploadShopCover";
+const uploadUrl = "/api/file/upload/shop-cover";
 const fileList = ref([]);
 
 const beforeUpload = (file) => {
@@ -441,7 +442,13 @@ const beforeUpload = (file) => {
 
 const handleUploadSuccess = (response, file) => {
     if (response && response.code === 200 && response.data) {
-        data.form.coverPath = response.data;
+        data.form.coverPath = response.data + "?t=" + Date.now();
+        if (data.form.shopId) {
+            const row = data.tableData.find(r => r.shopId === data.form.shopId);
+            if (row) {
+                row.coverPath = data.form.coverPath;
+            }
+        }
         ElMessage.success("上传成功");
     } else {
         ElMessage.error(response?.msg || "上传失败");

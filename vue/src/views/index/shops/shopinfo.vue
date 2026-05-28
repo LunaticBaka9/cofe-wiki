@@ -61,126 +61,6 @@
                                 </th>
                                 <td>{{ data.shopData.openTime }}</td>
                             </tr>
-                            <tr>
-                                <th>
-                                    <span class="label-pill mb-2">营业日</span>
-                                </th>
-                                <td>
-                                    <table class="date-table">
-                                        <tbody>
-                                            <tr>
-                                                <th>日</th>
-                                                <th>一</th>
-                                                <th>二</th>
-                                                <th>三</th>
-                                                <th>四</th>
-                                                <th>五</th>
-                                                <th>六</th>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Sun"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Mon"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Tues"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Wed"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Thur"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Fri"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p
-                                                        v-if="OpenDays.Sat"
-                                                        class="table-text-center"
-                                                    >
-                                                        √
-                                                    </p>
-                                                    <p
-                                                        v-else
-                                                        class="table-text-center"
-                                                    >
-                                                        X
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </el-col>
@@ -276,16 +156,6 @@ const data = reactive({
     shopData: {},
 });
 
-const OpenDays = reactive({
-    Sun: 1,
-    Mon: 1,
-    Tues: 1,
-    Wed: 1,
-    Thur: 1,
-    Fri: 1,
-    Sat: 1,
-});
-
 const targetType = "shop";
 const comments = ref([]);
 const currentUserId = ref(data.user.userId || data.user.id || 0);
@@ -298,13 +168,6 @@ const load = () => {
         if (res.code === "200") {
             data.shopData = res.data;
             data.coverPath = res.data.coverPath;
-            OpenDays.Sun = res.data.sun;
-            OpenDays.Mon = res.data.mon;
-            OpenDays.Tues = res.data.tues ?? res.data.wed;
-            OpenDays.Wed = res.data.wed;
-            OpenDays.Thur = res.data.thur;
-            OpenDays.Fri = res.data.fri;
-            OpenDays.Sat = res.data.sat;
         } else {
             ElMessage.error(res.msg);
         }

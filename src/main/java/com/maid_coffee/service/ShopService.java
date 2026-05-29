@@ -45,7 +45,7 @@ public class ShopService {
         shopMapper.updateByShopId(shop);
     }
 
-    public void updateCoverPath(Integer shopId, String coverPath) {
+    public void updateCoverPath(Long shopId, String coverPath) {
         shopMapper.updateCoverPathByShopId(shopId, coverPath);
     }
 

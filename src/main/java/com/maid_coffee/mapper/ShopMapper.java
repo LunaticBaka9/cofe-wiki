@@ -8,7 +8,7 @@ import com.maid_coffee.entity.Shop;
 
 @Mapper
 public interface ShopMapper {
-    
+
     List<Shop> selectAllShops(Shop shop);
 
     Shop selectByShopId(Integer shopId);
@@ -19,8 +19,8 @@ public interface ShopMapper {
 
     void updateByShopId(Shop shop);
 
-    void updateCoverPathByShopId(Integer shopId, String coverPath);
+    void updateCoverPathByShopId(Long shopId, String coverPath);
 
     void deleteByShopId(Shop shop);
-   
+
 }

@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class Shop {
-    private Integer shopId;
+    private Long shopId;
     private String shopName;
     private String slogn;
     private String address;
@@ -28,7 +28,7 @@ public class Shop {
     private String facebook;
     private String menu;
     private String pmenu;
-    private String tags;                                       
+    private String tags;
     private int sun;
     private int mon;
     private int tues;

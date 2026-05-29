@@ -10,7 +10,16 @@ const request = axios.create({
 
 request.interceptors.request.use(
     (config) => {
-        config.headers["Content-Type"] = "application/json;charset=utf-8";
+        if (config.data instanceof FormData) {
+            delete config.headers["Content-Type"];
+        } else if (
+            config.headers["Content-Type"] &&
+            config.headers["Content-Type"].includes("multipart/form-data")
+        ) {
+            // allow browser/axios to set boundary
+        } else {
+            config.headers["Content-Type"] = "application/json;charset=utf-8";
+        }
         return config;
     },
     (error) => {

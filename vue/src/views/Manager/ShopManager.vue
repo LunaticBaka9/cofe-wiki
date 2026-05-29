@@ -158,37 +158,26 @@
                         placeholder="店铺名称"
                     />
                 </el-form-item>
-                <el-form-item label="封面">
+
+                <el-form-item label="店铺图片" prop="coverPath">
                     <el-upload
-                        :action="uploadUrl"
-                        name="photo"
-                        :file-list="fileList"
-                        :before-upload="beforeUpload"
-                        :on-success="handleUploadSuccess"
-                        :on-error="handleUploadError"
+                        class="goods-uploader"
                         :show-file-list="false"
-                        accept="image/*"
-                        :data="{ shopId: data.form.shopId }"
+                        :before-upload="beforeUpload"
+                        action="#"
                     >
-                        <template #trigger>
-                            <el-button type="primary">选择文件</el-button>
-                        </template>
-                        <template #tip>
-                            <div class="el-upload__tip text-red">
-                                上传图片尺寸应为 240 x 240 像素
-                            </div>
-                        </template>
-                    </el-upload>
-                    <div
-                        v-if="data.form.coverPath"
-                        style="margin-top: 8px; margin-left: 20px"
-                    >
-                        <el-image
+                        <img
+                            v-if="data.form.coverPath"
                             :src="data.form.coverPath"
-                            style="width: 80px; height: 80px; object-fit: cover"
+                            class="goods-img-preview"
                         />
+                        <el-icon v-else class="uploader-icon"><Plus /></el-icon>
+                    </el-upload>
+                    <div class="upload-tip">
+                        点击上传商店图片，支持jpg、png格式
                     </div>
                 </el-form-item>
+
                 <el-form-item prop="location" label="所在地区"
                     ><el-input
                         v-model="data.form.location"
@@ -411,52 +400,48 @@ const deleteBatch = () => {
         .catch((err) => {});
 };
 
-const uploadUrl = "/api/file/upload/shop-cover";
+const uploadUrl = "/file/uploadShopCover";
 const fileList = ref([]);
+const uploadLoading = ref(false);
 
-const beforeUpload = (file) => {
-    return new Promise((resolve, reject) => {
-        if (!file.type.startsWith("image/")) {
-            ElMessage.error("请选择图片文件");
-            return reject(false);
-        }
-        const url = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = () => {
-            URL.revokeObjectURL(url);
-            if (img.naturalWidth === 240 && img.naturalHeight === 240) {
-                resolve(true);
-            } else {
-                ElMessage.error("图片尺寸需为 240 x 240 像素");
-                reject(false);
-            }
-        };
-        img.onerror = () => {
-            URL.revokeObjectURL(url);
-            ElMessage.error("无法读取图片");
-            reject(false);
-        };
-        img.src = url;
-    });
-};
+const beforeUpload = async (file) => {
+    const isImage = file.type.startsWith("image/");
+    const isLt5M = file.size / 1024 / 1024 < 5;
 
-const handleUploadSuccess = (response, file) => {
-    if (response && response.code === 200 && response.data) {
-        data.form.coverPath = response.data + "?t=" + Date.now();
-        if (data.form.shopId) {
-            const row = data.tableData.find(r => r.shopId === data.form.shopId);
-            if (row) {
-                row.coverPath = data.form.coverPath;
-            }
-        }
-        ElMessage.success("上传成功");
-    } else {
-        ElMessage.error(response?.msg || "上传失败");
+    if (!isImage) {
+        ElMessage.error("只能上传图片文件!");
+        return false;
     }
-};
+    if (!isLt5M) {
+        ElMessage.error("图片大小不能超过5MB!");
+        return false;
+    }
 
-const handleUploadError = (err) => {
-    ElMessage.error("上传失败: " + (err.message || "服务器错误"));
+    uploadLoading.value = true;
+
+    try {
+        const formData = new FormData();
+        formData.append("photo", file);
+        if (data.form.shopId) {
+            formData.append("shopId", data.form.shopId);
+        }
+
+        const res = await request.post("/file/uploadShopCover", formData);
+
+        if (res.code === "200") {
+            data.form.coverPath = res.data || res.data?.url;
+            ElMessage.success("图片上传成功");
+        } else {
+            ElMessage.error(res.msg || "上传失败");
+        }
+    } catch (error) {
+        console.error("上传图片失败:", error);
+        ElMessage.error("图片上传失败");
+    } finally {
+        uploadLoading.value = false;
+    }
+
+    return false;
 };
 
 const save = () => {

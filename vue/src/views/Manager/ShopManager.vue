@@ -60,6 +60,7 @@
                 <el-table-column label="封面">
                     <template #default="scope">
                         <el-image
+                            class="table-img-preview"
                             :src="scope.row.coverPath"
                             :preview-src-list="[scope.row.coverPath]"
                             preview-teleported
@@ -174,7 +175,7 @@
                         <el-icon v-else class="uploader-icon"><Plus /></el-icon>
                     </el-upload>
                     <div class="upload-tip">
-                        点击上传商店图片，支持jpg、png格式
+                        点击上传商店图片，支持jpg、png格式，图片会自动进入固定比例裁剪
                     </div>
                 </el-form-item>
 
@@ -228,13 +229,76 @@
                 </div>
             </template>
         </el-dialog>
+
+        <el-dialog
+            v-model="data.cropVisible"
+            title="裁剪图片"
+            width="780px"
+            destroy-on-close
+            :close-on-click-modal="false"
+            @close="closeCropDialog"
+        >
+            <div class="crop-dialog-body">
+                <div class="crop-left">
+                    <div class="crop-area" ref="cropAreaRef">
+                        <img
+                            ref="cropImageRef"
+                            v-if="data.crop.imageSrc"
+                            :src="data.crop.imageSrc"
+                            class="crop-image"
+                            @load="onCropImageLoad"
+                        />
+                        <div
+                            class="crop-rect"
+                            v-if="data.crop.imageSrc"
+                            :style="cropRectStyle()"
+                            @mousedown="startCropDrag"
+                        ></div>
+                    </div>
+                </div>
+                <div class="crop-right">
+                    <el-form label-width="90px">
+                        <el-form-item label="裁剪比例">
+                            <div>1:1</div>
+                        </el-form-item>
+                        <el-form-item label="缩放">
+                            <el-slider
+                                v-model="data.crop.zoom"
+                                :min="30"
+                                :max="100"
+                                @change="onZoomChange"
+                                show-tooltip
+                            />
+                        </el-form-item>
+                        <el-form-item label="预览">
+                            <div
+                                class="crop-preview"
+                                :style="previewStyle()"
+                            ></div>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="closeCropDialog">取消</el-button>
+                    <el-button
+                        type="primary"
+                        :loading="uploadLoading"
+                        @click="applyCropAndUpload"
+                        >确认裁剪上传</el-button
+                    >
+                </div>
+            </template>
+        </el-dialog>
+
         <br /><br /><br /><br />
     </el-main>
 </template>
 
 <script setup name="ShopManager">
 import request from "@/utils/request.js";
-import { onBeforeMount, reactive, ref } from "vue";
+import { onBeforeMount, nextTick, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 onBeforeMount(() => {
@@ -262,6 +326,19 @@ const data = reactive({
     tableData: [],
     formVisible: false,
     form: {},
+    cropVisible: false,
+    crop: {
+        imageSrc: "",
+        file: null,
+        naturalWidth: 0,
+        naturalHeight: 0,
+        displayWidth: 0,
+        displayHeight: 0,
+        x: 0,
+        y: 0,
+        size: 0,
+        zoom: 70,
+    },
     rules: {
         shopName: [
             { required: true, message: "请填写商店名称", trigger: "blur" },
@@ -277,6 +354,15 @@ const data = reactive({
 });
 
 const formRef = ref();
+const cropImageRef = ref(null);
+const cropAreaRef = ref(null);
+const cropDrag = reactive({
+    active: false,
+    startX: 0,
+    startY: 0,
+    startLeft: 0,
+    startTop: 0,
+});
 
 const load = () => {
     request
@@ -319,6 +405,168 @@ const handleEidor = (row) => {
 
 const handleSelectionChange = (rows) => {
     data.rows = rows;
+};
+
+const resetCropPosition = () => {
+    const displayWidth = data.crop.displayWidth;
+    const displayHeight = data.crop.displayHeight;
+    const maxSize = Math.min(displayWidth, displayHeight);
+    data.crop.size = Math.max(
+        120,
+        Math.min(maxSize, (data.crop.zoom * maxSize) / 100),
+    );
+    data.crop.x = (displayWidth - data.crop.size) / 2;
+    data.crop.y = (displayHeight - data.crop.size) / 2;
+};
+
+const onCropImageLoad = async () => {
+    await nextTick();
+    const img = cropImageRef.value;
+    const area = cropAreaRef.value;
+    if (!img || !area) {
+        return;
+    }
+    data.crop.naturalWidth = img.naturalWidth;
+    data.crop.naturalHeight = img.naturalHeight;
+    data.crop.displayWidth = img.clientWidth;
+    data.crop.displayHeight = img.clientHeight;
+    data.crop.zoom = 70;
+    resetCropPosition();
+};
+
+const clampCrop = () => {
+    const maxX = Math.max(0, data.crop.displayWidth - data.crop.size);
+    const maxY = Math.max(0, data.crop.displayHeight - data.crop.size);
+    data.crop.x = Math.min(Math.max(0, data.crop.x), maxX);
+    data.crop.y = Math.min(Math.max(0, data.crop.y), maxY);
+};
+
+const onZoomChange = () => {
+    resetCropPosition();
+};
+
+const startCropDrag = (event) => {
+    event.preventDefault();
+    cropDrag.active = true;
+    cropDrag.startX = event.clientX;
+    cropDrag.startY = event.clientY;
+    cropDrag.startLeft = data.crop.x;
+    cropDrag.startTop = data.crop.y;
+    window.addEventListener("mousemove", moveCropDrag);
+    window.addEventListener("mouseup", endCropDrag);
+};
+
+const moveCropDrag = (event) => {
+    if (!cropDrag.active) return;
+    const deltaX = event.clientX - cropDrag.startX;
+    const deltaY = event.clientY - cropDrag.startY;
+    data.crop.x = cropDrag.startLeft + deltaX;
+    data.crop.y = cropDrag.startTop + deltaY;
+    clampCrop();
+};
+
+const endCropDrag = () => {
+    cropDrag.active = false;
+    window.removeEventListener("mousemove", moveCropDrag);
+    window.removeEventListener("mouseup", endCropDrag);
+};
+
+const closeCropDialog = () => {
+    data.cropVisible = false;
+    data.crop.imageSrc = "";
+    data.crop.file = null;
+};
+
+const cropRectStyle = () => {
+    return {
+        position: "absolute",
+        left: `${data.crop.x}px`,
+        top: `${data.crop.y}px`,
+        width: `${data.crop.size}px`,
+        height: `${data.crop.size}px`,
+        border: "2px dashed rgba(64, 158, 255, 0.85)",
+        background: "rgba(64, 158, 255, 0.15)",
+        cursor: "move",
+        boxSizing: "border-box",
+    };
+};
+
+const previewStyle = () => {
+    if (
+        !data.crop.imageSrc ||
+        !data.crop.displayWidth ||
+        !data.crop.displayHeight
+    ) {
+        return {
+            backgroundColor: "#f5f7fa",
+        };
+    }
+    return {
+        backgroundImage: `url(${data.crop.imageSrc})`,
+        backgroundSize: `${data.crop.displayWidth}px ${data.crop.displayHeight}px`,
+        backgroundPosition: `-${data.crop.x}px -${data.crop.y}px`,
+        backgroundRepeat: "no-repeat",
+    };
+};
+
+const applyCropAndUpload = async () => {
+    if (!cropImageRef.value) {
+        ElMessage.error("图片未加载, 无法裁剪");
+        return;
+    }
+    const img = cropImageRef.value;
+    const scaleX = data.crop.naturalWidth / data.crop.displayWidth;
+    const scaleY = data.crop.naturalHeight / data.crop.displayHeight;
+    const naturalX = data.crop.x * scaleX;
+    const naturalY = data.crop.y * scaleY;
+    const naturalSize = data.crop.size * Math.min(scaleX, scaleY);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = naturalSize;
+    canvas.height = naturalSize;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(
+        img,
+        naturalX,
+        naturalY,
+        naturalSize,
+        naturalSize,
+        0,
+        0,
+        naturalSize,
+        naturalSize,
+    );
+
+    const blob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/png"),
+    );
+    if (!blob) {
+        ElMessage.error("裁剪失败，请重试");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", blob, data.crop.file?.name ?? "cropped.png");
+    if (data.form.shopId) {
+        formData.append("shopId", data.form.shopId);
+    }
+
+    uploadLoading.value = true;
+    try {
+        const res = await request.post("/file/uploadShopCover", formData);
+        if (res.code === "200") {
+            data.form.coverPath = res.data || res.data?.url;
+            ElMessage.success("图片上传成功");
+            closeCropDialog();
+        } else {
+            ElMessage.error(res.msg || "上传失败");
+        }
+    } catch (error) {
+        console.error("上传图片失败:", error);
+        ElMessage.error("图片上传失败");
+    } finally {
+        uploadLoading.value = false;
+    }
 };
 
 const add = () => {
@@ -417,29 +665,13 @@ const beforeUpload = async (file) => {
         return false;
     }
 
-    uploadLoading.value = true;
-
-    try {
-        const formData = new FormData();
-        formData.append("photo", file);
-        if (data.form.shopId) {
-            formData.append("shopId", data.form.shopId);
-        }
-
-        const res = await request.post("/file/uploadShopCover", formData);
-
-        if (res.code === "200") {
-            data.form.coverPath = res.data || res.data?.url;
-            ElMessage.success("图片上传成功");
-        } else {
-            ElMessage.error(res.msg || "上传失败");
-        }
-    } catch (error) {
-        console.error("上传图片失败:", error);
-        ElMessage.error("图片上传失败");
-    } finally {
-        uploadLoading.value = false;
-    }
+    data.crop.file = file;
+    data.cropVisible = true;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        data.crop.imageSrc = e.target.result;
+    };
+    reader.readAsDataURL(file);
 
     return false;
 };
@@ -453,5 +685,71 @@ const save = () => {
 .card {
     padding: 10px;
     border-radius: 5px;
+}
+.crop-dialog-body {
+    display: flex;
+    gap: 20px;
+}
+.crop-left {
+    flex: 1;
+    min-width: 360px;
+}
+.crop-area {
+    position: relative;
+    width: 100%;
+    min-height: 420px;
+    border: 1px solid #dcdfe6;
+    background: #f5f7fa;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.crop-area img.crop-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+}
+.crop-rect {
+    z-index: 2;
+}
+.crop-right {
+    width: 240px;
+    flex-shrink: 0;
+}
+.crop-preview {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.goods-img-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: inline-block;
+}
+.table-img-preview {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+}
+.table-img-preview .el-image__inner {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 </style>

@@ -1,6 +1,7 @@
 package com.maid_coffee.entity;
 
 import lombok.Data;
+
 import java.util.Date;
 
 @Data

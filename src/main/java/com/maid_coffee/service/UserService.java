@@ -1,19 +1,17 @@
 package com.maid_coffee.service;
 
-import java.util.List;
-
-import com.maid_coffee.entity.Role;
-import com.maid_coffee.mapper.RoleMapper;
-import org.springframework.stereotype.Service;
-
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.maid_coffee.entity.Role;
 import com.maid_coffee.entity.User;
 import com.maid_coffee.exception.CustomerException;
+import com.maid_coffee.mapper.RoleMapper;
 import com.maid_coffee.mapper.UserMapper;
-
-import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {

@@ -11,7 +11,7 @@
 	<groupId>com.maid_coffe</groupId>
 	<artifactId>cofewiki</artifactId>
 	<version>0.0.1</version>
-	<name>cofewiki</name>
+	<name>cofe-wiki</name>
 	<description>springboot</description>
 	
 	<properties>

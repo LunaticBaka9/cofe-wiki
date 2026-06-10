@@ -11,7 +11,7 @@
  Target Server Version : 80012 (8.0.12)
  File Encoding         : 65001
 
- Date: 28/05/2026 17:59:07
+ Date: 10/06/2026 17:16:32
 */
 
 SET NAMES utf8mb4;
@@ -41,7 +41,7 @@ CREATE TABLE `comments`  (
   INDEX `idx_target`(`target_id` ASC, `target_type` ASC) USING BTREE,
   INDEX `idx_root_status_created`(`root_id` ASC, `status` ASC, `created_date` ASC) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '评论表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
@@ -50,6 +50,7 @@ INSERT INTO `comments` VALUES (1, 0, 'shop', NULL, 0, 'test', 0, 0, 1, 0, 0, 0, 
 INSERT INTO `comments` VALUES (2, 32005, 'shop', '', 16, '123', 1, 2, 1, 0, 0, 0, 0, '2026-05-14 17:54:22', '2026-05-15 17:43:09');
 INSERT INTO `comments` VALUES (3, 32005, 'shop', NULL, 16, '😀😀🤣🤣🤣❤️❤️❤️🤘👌👌👌🙏🙏🙏🙌🙌🙌👍👍👍🤪🤪🤪😝😜😛😛🥰', 1, 0, 0, 0, 2, 2, 16, '2026-05-15 17:40:02', '2026-05-15 17:41:35');
 INSERT INTO `comments` VALUES (4, 32005, 'shop', NULL, 16, 'testsetastsatesaetawestasetsea👌👌👌❤️❤️❤️💞💞💞', 15, 0, 1, 0, 2, 2, 16, '2026-05-15 17:41:57', '2026-05-15 17:42:48');
+INSERT INTO `comments` VALUES (5, 32005, 'shop', NULL, 16, 'Oishi，Yami，KanshaKansha，moibaitabetai, sha! sha! sha! sha! sha! Happy Smile!😋😋😋😍😍😍👍👍👍❤️❤️❤️🙏🙏🙏🙏', 0, 0, 1, 0, 0, 0, 0, '2026-05-29 17:56:32', '2026-05-29 17:56:32');
 
 -- ----------------------------
 -- Table structure for like_record
@@ -132,7 +133,7 @@ INSERT INTO `shop` VALUES (7795, 'がさいれ！', '新店开业！位于歌舞
 INSERT INTO `shop` VALUES (7762, 'cafe&bar Funcy', '超过15种服装任你挑选，随心所欲更换装扮！', 141, '050-31770-2336', '大阪府大阪市浪速区日本橋4-8-17 KIKビル1階', '平日（周一至周五）：18:00 ～ 23:00周末及节假日：15:00 ～ 23:00', '大阪府', 1, 'api/img/shop/cover/shop_image_7762_240x240.jpg', '咖啡厅BAR', NULL);
 INSERT INTO `shop` VALUES (7660, 'SleepingForest（スリーピング フォレスト）', '这是一家以“沉睡的森林”为主题的特色咖啡馆。', 141, '080-9709-1717', '大阪府大阪府大阪市浪速区難波中２丁目６−２１', '', '大阪府', 1, 'api/img/shop/cover/shop_image_2164_240x240.jpg', '咖啡厅BAR', NULL);
 INSERT INTO `shop` VALUES (7400, 'mirai connect (ミラコネ)', '这是一家以“VOCALOID（虚拟歌姬）与未来”为主题的女仆咖啡厅＆酒吧！', 70, '0924065933', '福岡県福岡市中央区天神３丁目１４－２', '', '福岡県', 1, 'api/img/shop/cover/shop_image_2164_240x240.jpg', '咖啡厅BAR', NULL);
-INSERT INTO `shop` VALUES (100, 'test', 'test', 0, '12312312312312', '321312312312', 'sdfafadsfasdfasdf', '上海', 1, 'api/img/shop/cover/shop_image_100_240x240.jpg', NULL, '2026-05-28 17:58:30');
+INSERT INTO `shop` VALUES (100, 'test', 'test', 0, '12312312312312', '321312312312', 'sdfafadsfasdfasdf', '广州', 1, 'api/upload/shopCovers/1781080640470_EvilLoud.png', NULL, '2026-06-10 16:37:22');
 INSERT INTO `shop` VALUES (32008, 'asdfasdf', NULL, 90, NULL, 'sadfasdfasdf', NULL, 'asdfsadf', 0, 'api/img/shop/cover/shop_image_2164_240x240.jpg', NULL, '2026-01-02 17:20:47');
 
 -- ----------------------------
@@ -220,16 +221,18 @@ INSERT INTO `user` VALUES (18, 'testdup', 'p', NULL, 'testdup', '3123123123', NU
 -- ----------------------------
 DROP TABLE IF EXISTS `wiki`;
 CREATE TABLE `wiki`  (
-  `id` int(11) NOT NULL,
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `id` bigint(11) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+  `tags` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `update_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wiki
 -- ----------------------------
-INSERT INTO `wiki` VALUES (1, NULL, 'cafeShop', '咖啡厅介绍');
+INSERT INTO `wiki` VALUES (1, 'cafeShop', '咖啡厅介绍', '<p>\r\n                            <b>咖啡馆 、 咖啡店</b>或<b>咖啡厅</b>\r\n                            （ 法语： [kafe] 咖啡馆\r\n                            ）是一种提供各种咖啡饮品的场所，例如意式浓缩咖啡 、\r\n                            拿铁\r\n                            、美式咖啡和卡布奇诺，以及其他饮品。意式咖啡吧是一种专门供应意式浓缩咖啡和意式浓缩咖啡饮品的咖啡馆。\r\n                            一些咖啡馆除了其他冷饮（例如冰茶）\r\n                            外，还会供应冰咖啡以及其他不含咖啡因的饮品。咖啡馆也可能供应食物，例如小吃、\r\n                            三明治 、 松饼 、蛋糕、面包、 糕点或甜甜圈\r\n                            。在加拿大和美国，许多甜甜圈店都提供咖啡作为甜甜圈的佐餐，因此它们也可以被归类为咖啡馆。不过，与提供更精致糕点和饮品的咖啡馆相比，甜甜圈店往往更休闲，供应价格更低的食品，并且更方便外带和免下车服务，这在这些国家很受欢迎。\r\n                            在欧洲大陆，一些咖啡馆甚至供应酒精饮料，而在西亚，人们喜欢提供通过水烟壶吸食的调味烟草，这种烟草在大多数阿拉伯语中被称为\r\n                            shisha ，在黎凡特阿拉伯语 、\r\n                            希腊语和土耳其语中被称为 nargile 。\r\n                        </p>\r\n                        <p>\r\n                            虽然“ café ”一词可能指咖啡馆，但它也可以指餐馆 、\r\n                            英式咖啡馆 （也俗​​称“caff”）、“ greasy spoon\r\n                            ”（一种小型廉价餐厅）、 路边咖啡馆 、\r\n                            茶馆或茶室，或其他休闲餐饮场所。\r\n                            咖啡馆可能与酒吧或餐厅有一些共同特征，但它与自助餐厅\r\n                            （一种不提供餐桌服务的食堂式餐厅）不同。咖啡馆的规模从个体经营的小店到大型跨国公司不等\r\n                            。一些连锁咖啡馆采用特许经营模式\r\n                            ，在全球多个国家拥有众多分店。\r\n                        </p>\r\n                        <p>\r\n                            从文化角度来看，咖啡馆在很大程度上是社交互动的中心：咖啡馆为顾客提供了一个聚会、交谈、阅读、写作、娱乐或消磨时间的场所，无论是独自一人还是三五成群。咖啡馆可以成为其固定会员的非正式社交俱乐部\r\n                            。早在 20 世纪 50 年代的垮掉一代时期和 60\r\n                            年代的民谣音乐时期，咖啡馆就经常举办创作歌手的演出，通常在晚上。数字时代，\r\n                            网吧的兴起也遵循着类似的原则。\r\n                        </p>', 'shop,cafe', '2026-06-10 17:12:25');
 
 SET FOREIGN_KEY_CHECKS = 1;

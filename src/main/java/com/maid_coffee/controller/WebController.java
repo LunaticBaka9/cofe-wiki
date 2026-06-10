@@ -1,15 +1,13 @@
 package com.maid_coffee.controller;
 
+import com.maid_coffee.common.Result;
+import com.maid_coffee.entity.User;
+import com.maid_coffee.service.UserService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.maid_coffee.common.Result;
-import com.maid_coffee.entity.User;
-import com.maid_coffee.service.UserService;
-
-import jakarta.annotation.Resource;
 
 
 

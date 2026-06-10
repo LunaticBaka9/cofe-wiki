@@ -29,12 +29,5 @@ public class Shop {
     private String menu;
     private String pmenu;
     private String tags;
-    private int sun;
-    private int mon;
-    private int tues;
-    private int wed;
-    private int thur;
-    private int fri;
-    private int sat;
 
 }

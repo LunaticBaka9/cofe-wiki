@@ -110,7 +110,10 @@
                 <el-tab-pane label="店铺详情" name="first">
                     <information />
                 </el-tab-pane>
-                <el-tab-pane label="最新资讯" name="second">Config</el-tab-pane>
+                <el-tab-pane label="最新资讯" name="second">
+                    <consultation />
+                  Consultation
+                </el-tab-pane>
                 <el-tab-pane label="店面图片" name="third">Role</el-tab-pane>
                 <el-tab-pane label="其他" name="fourth">Task</el-tab-pane>
             </el-tabs>
@@ -142,10 +145,11 @@
 import { reactive, ref, onMounted } from "vue";
 import request from "../../../utils/request";
 import router from "../../../router";
-import Information from "./information.vue";
 import CommentArea from "../../components/comments/CommentArea.vue";
 import CommentInput from "../../components/comments/CommentInput.vue";
 import { ElMessage } from "element-plus";
+import Information from "./information.vue";
+import Consultation from "./consultation.vue";
 
 const activeName = ref("first");
 

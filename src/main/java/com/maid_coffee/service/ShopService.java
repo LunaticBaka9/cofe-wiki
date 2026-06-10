@@ -1,16 +1,14 @@
 package com.maid_coffee.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.maid_coffee.entity.Shop;
 import com.maid_coffee.exception.CustomerException;
 import com.maid_coffee.mapper.ShopMapper;
-
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ShopService {

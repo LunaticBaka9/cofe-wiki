@@ -1,11 +1,10 @@
 package com.maid_coffee.mapper;
 
-import java.util.List;
-
+import com.maid_coffee.entity.Comments;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.maid_coffee.entity.Comments;
+import java.util.List;
 
 @Mapper
 public interface CommentsMapper {
